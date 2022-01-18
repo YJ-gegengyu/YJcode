@@ -1,0 +1,335 @@
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1;
+  background: #fff;
+}
+
+:focus {
+  outline: 1;
+}
+
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+nav ul, li {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted #000;
+  cursor: help;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input,
+select {
+  vertical-align: middle;
+}
+
+em {
+  font-style: normal;
+}
+
+*, body {
+  font-family: PFang, PingFang, songti, Helvetica Neue, Helvetica, arial, sans-serif;
+}
+
+.voucher-template-container .voucher-template-header {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.voucher-template-container .voucher-template-table_header {
+  text-align: center;
+  background: #d3e8f9;
+  border: 1px solid #bcbdbd;
+  line-height: 40px;
+  position: relative;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-right {
+  display: flex;
+  margin-left: 5%;
+  justify-content: flex-start;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-right .header-cell-summary {
+  width: 32%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-right .header-cell-subject {
+  width: 28%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-right .header-cell-summary {
+  width: 32%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+  padding-left: 10px;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-right .header-cell-debitAmount {
+  width: 20%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-right .header-cell-creditAmount {
+  width: 20%;
+  box-sizing: border-box;
+}
+.voucher-template-container .voucher-template-table_header .header-cell-left {
+  width: 5%;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.voucher-template-container .voucher-template-table_header .header-scroll {
+  width: 16px;
+  border-left: 1px solid #bcbdbd;
+}
+.voucher-template-container .voucher-template-list {
+  height: calc(100% - 50px);
+  overflow: hidden;
+  overflow-y: auto;
+}
+.voucher-template-container .voucher-template-list-item {
+  display: flex;
+  text-align: center;
+  border: 1px solid #bcbdbd;
+  margin-bottom: 10px;
+  position: relative;
+}
+.voucher-template-container .voucher-template-list-item:first-child {
+  border-top: 0;
+}
+.voucher-template-container .voucher-template-list-item .list-left {
+  width: 5%;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.voucher-template-container .voucher-template-list-item .list-right {
+  width: 95%;
+  box-sizing: border-box;
+  text-align: left;
+  margin-left: 5%;
+  line-height: 30px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-header {
+  padding-left: 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-header span {
+  margin-right: 50px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-content {
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  border-top: 1px solid #bcbdbd;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-content .content-summary {
+  width: 32%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-content .content-subject {
+  width: 28%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-content .content-debitAmount {
+  width: 20%;
+  box-sizing: border-box;
+  border-right: 1px solid #bcbdbd;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-right-content .content-creditAmount {
+  width: 20%;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-total {
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  border-top: 1px solid #bcbdbd;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-total .list-item-total-amount {
+  width: 60%;
+  border-right: 1px solid #bcbdbd;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-total .list-item-total-amount {
+  width: 60%;
+  border-right: 1px solid #bcbdbd;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-total .content-debitAmount {
+  width: 20%;
+  border-right: 1px solid #bcbdbd;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.voucher-template-container .voucher-template-list-item .list-right .list-item-total .content-creditAmount {
+  padding: 0 10px;
+  width: 20%;
+  box-sizing: border-box;
+}

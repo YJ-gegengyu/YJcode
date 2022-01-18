@@ -1,0 +1,41 @@
+// SCSS 全局变量 与 Element ui  保持一致
+// base
+
+$--base-border-color: #bcbdbd;
+$--base-color: #606266;
+$--base-font-size: 16px;
+
+
+// 特殊字体大小
+$--special-font: 14px;
+
+
+
+
+// 按钮边框颜色
+$--button-border-color: rgb(0, 138, 227);
+// 按钮
+$--button-border-color: rgb(0, 138, 227);
+// 默认主题色
+$--color-primary: rgb(0, 138, 227);
+
+// 字体大小
+$--font-size: 14px;
+// 字体大小
+$--font-color: $--color-primary;
+/* Table
+-------------------------- */
+
+$--table-font-size: $--base-font-size;
+$--table-background-color: #d3e8f9;
+$--table-color: $--base-color;
+
+
+/* input
+-------------------------- */
+$--input-border: $--base-border-color;
+
+
+/* button
+-------------------------- */
+$--button-font-size: 14px;

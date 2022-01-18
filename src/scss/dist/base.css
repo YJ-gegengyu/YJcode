@@ -1,0 +1,145 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: #fafcff;
+}
+
+.global-message_wrapper {
+  max-height: 350px;
+  overflow: hidden;
+  overflow-y: auto;
+  font-size: 16px;
+}
+.global-message_wrapper .message-title {
+  color: red;
+  line-height: 25px;
+}
+.global-message_wrapper p {
+  line-height: 25px;
+}
+
+.check-out-content {
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+.check-out-content .month-width {
+  width: 340px;
+  margin-left: 5px;
+}
+
+.regulatory-inspection-wrapper {
+  padding: 10px 30px;
+  padding-top: 0;
+  border-bottom: 1px solid #ccc;
+}
+.regulatory-inspection-wrapper.regulatory-inspection-list {
+  max-height: 420px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper:nth-of-type(2) .regulatory-inspection-row-header .img-wrapper {
+  background: #4faed2;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper:nth-of-type(3) .regulatory-inspection-row-header .img-wrapper {
+  background: #fb7798;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper:nth-of-type(4) .regulatory-inspection-row-header .img-wrapper {
+  background: #00b7ee;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper .regulatory-inspection-row-content {
+  padding-left: 70px;
+  margin: 5px 0;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper .regulatory-inspection-row-content li {
+  list-style: circle;
+  line-height: 25px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper .regulatory-inspection-row-content .active {
+  color: red;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper .regulatory-inspection-row-header {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper .regulatory-inspection-row-header .img-wrapper {
+  width: 46px;
+  height: 46px;
+  background: #fc9f8b;
+  line-height: 46px;
+  text-align: center;
+  margin-right: 20px;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row-wrapper .regulatory-inspection-row-header .img-wrapper img {
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row:nth-of-type(2) .img-wrapper {
+  background: #4faed2;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row:nth-of-type(3) .img-wrapper {
+  background: #fb7798;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row:nth-of-type(4) .img-wrapper {
+  background: #00b7ee;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row .img-wrapper {
+  width: 46px;
+  height: 46px;
+  background: #fc9f8b;
+  line-height: 46px;
+  text-align: center;
+  margin-right: 20px;
+}
+.regulatory-inspection-wrapper .regulatory-inspection-row .img-wrapper img {
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+}
+
+.regulatory-inspection-content .regulatory-inspection-footer {
+  text-align: center;
+  margin-top: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  width: 6px;
+  background: rgba(16, 31, 28, 0.1);
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(16, 31, 28, 0.5);
+  background-clip: padding-box;
+  min-height: 28px;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #101f1c;
+}

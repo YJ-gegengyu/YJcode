@@ -1,0 +1,157 @@
+.voucher-template-container {
+    .voucher-template-header {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+    .voucher-template-table_header {
+        text-align: center;
+        background: #d3e8f9;
+        border:1px solid #bcbdbd;
+        line-height: 40px;
+        position: relative;
+        .header-cell-right{
+            display: flex;
+            margin-left: 5%;
+            justify-content: flex-start;
+            .header-cell-summary{
+                width: 32%;
+                box-sizing: border-box;
+                border-right: 1px solid #bcbdbd;
+            }
+            .header-cell-subject{
+                width: 28%;
+                box-sizing: border-box;
+                border-right: 1px solid #bcbdbd;
+            }
+            .header-cell-summary{
+                width: 32%;
+                box-sizing: border-box;
+                border-right: 1px solid #bcbdbd;
+                padding-left: 10px;
+            }
+            .header-cell-debitAmount{
+                width: 20%;
+                box-sizing: border-box;
+                border-right: 1px solid #bcbdbd;
+            }
+            .header-cell-creditAmount{
+                width: 20%;
+                box-sizing: border-box;
+            }
+        }
+        .header-cell-left{
+            width: 5%;
+            height: 100%;
+            box-sizing: border-box;
+            border-right: 1px solid #bcbdbd;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header-scroll{
+            width: 16px;
+            border-left: 1px solid #bcbdbd;
+        }
+    }
+    .voucher-template-list{
+        height: calc(100% - 50px);
+        overflow: hidden;
+        overflow-y: auto;
+        &-item{
+            display: flex;
+            text-align: center;
+            border:1px solid #bcbdbd;
+            margin-bottom: 10px;
+            position: relative;
+            &:first-child{
+                border-top: 0;
+            }
+            .list-left{
+                width: 5%;
+                height: 100%;
+                box-sizing: border-box;
+                border-right: 1px solid #bcbdbd;
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .list-right{
+                width: 95%;
+                box-sizing: border-box;
+                text-align: left;
+                margin-left: 5%;
+                line-height: 30px;
+                .list-item-right-header{
+                    padding-left: 10px;
+                    span{
+                        margin-right: 50px;
+                    }
+                }
+                .list-item-right-content{
+                    display: flex;
+                    justify-content: flex-start;
+                    box-sizing: border-box;
+                    border-top: 1px solid #bcbdbd;
+                    .content-summary{
+                        width: 32%;
+                        box-sizing: border-box;
+                        border-right: 1px solid #bcbdbd;
+                        padding: 0 10px;
+                    }
+                    .content-subject{
+                        width: 28%;
+                        box-sizing: border-box;
+                        border-right: 1px solid #bcbdbd;
+                        padding: 0 10px;
+                    }
+                    .content-debitAmount{
+                        width: 20%;
+                        box-sizing: border-box;
+                        border-right: 1px solid #bcbdbd;
+                        padding: 0 10px;
+                    }
+                    .content-creditAmount{
+                        width: 20%;
+                        box-sizing: border-box;
+                        padding: 0 10px;
+                    }
+                }
+                .list-item-total{
+                    display: flex;
+                    justify-content: flex-start;
+                    box-sizing: border-box;
+                    border-top: 1px solid #bcbdbd;
+                    .list-item-total-amount{
+                        width: 60%;
+                        border-right: 1px solid #bcbdbd;
+                        box-sizing: border-box;
+                        padding: 0 10px;
+                    }
+                    .list-item-total-amount{
+                        width: 60%;
+                        border-right: 1px solid #bcbdbd;
+                        box-sizing: border-box;
+                        padding: 0 10px;
+                    }
+                    .content-debitAmount{
+                        width: 20%;
+                        border-right: 1px solid #bcbdbd;
+                        box-sizing: border-box;
+                        padding: 0 10px;
+                    }
+                    .content-creditAmount{
+                        padding: 0 10px;
+                        width: 20%;
+                        box-sizing: border-box;
+                    }
+                }
+            }
+        }
+    }
+}
