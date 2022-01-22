@@ -9,6 +9,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 公用部分
+const list = () => import('views/list')
 // const layout = () => import('../layout')
 // const routerModulesFiles = require.context('./modules', false, /\.js$/)
 // export const routerModules = routerModulesFiles.keys().reduce((modules, modulePath) => {
@@ -35,14 +36,14 @@ const childDate = [
   }
 ]
 const routes = [
-//   {
-//     path: '/',
-//     name: 'authorization',
-//     component: authorization,
-//     meta: {
-//       title: '授权页'
-//     }
-//   },
+  {
+    path: '/',
+    name: 'list',
+    component: list,
+    meta: {
+      title: '列表页'
+    }
+  },
   ...childDate
 ]
 const createRouter = () => new VueRouter({

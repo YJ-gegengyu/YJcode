@@ -38,6 +38,7 @@ module.exports = {
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
       .set('final-ui', resolve('src/final-ui'))
+      .set('views', resolve('src/views'))
   },
   devServer: {
     contentBase: './',

@@ -15,7 +15,6 @@
         <!-- <img src="@/assets/img/empty.png"
         width="368"
         alt=""> -->
-        无
     </div>
     <slot>
       <span class="empty-desc">
