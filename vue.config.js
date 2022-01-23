@@ -37,7 +37,9 @@ module.exports = {
       .set('utils', resolve('src/utils'))
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
+      .set('directive', resolve('src/directive'))
       .set('final-ui', resolve('src/final-ui'))
+      .set('mixin', resolve('src/mixin'))
       .set('views', resolve('src/views'))
   },
   devServer: {

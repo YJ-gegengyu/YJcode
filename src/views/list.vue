@@ -1,14 +1,17 @@
 <template>
   <div class="content">
     <div class="btn">
-      <el-select class="btn-right" size="mini" v-model="value" placeholder="请选择">
+      <el-select clearable size="mini" @change="selectChange" v-model="goosType" placeholder="货品类型">
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in goodsTypeList"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
         </el-option>
       </el-select>
+      <el-button type="primary" @click="saveItem" size="mini">
+        保存数据
+      </el-button>
       <el-button type="primary" @click="addItem" size="mini">
         增加条目<i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
@@ -17,44 +20,84 @@
       :columns="column"
       row-key="fileID"
       :data="tableData"
+      :summary-method="summaryMethod"
+      show-summary
       class="table-wrapper"
       ref="refTable"
     ></final-table>
-    <detail ref="detaile"></detail>
+    <detail @handleSave="handleSave" ref="detaile"></detail>
   </div>
 </template>
 
 <script>
+import { accAdd } from 'utils'
 import detail from '@/components/detail.vue'
+// const appData = require('../components/data/tableDate.json')
+// const majorlist = appData
 export default {
   name: 'list',
   data () {
     return {
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      value: '',
+      goosType: 1,
+      goodsTypeList: [
+        {
+          id: 1,
+          name: '正装'
+        },
+        {
+          id: 2,
+          name: '赠品'
+        },
+        {
+          id: 3,
+          name: '积分'
+        }
+      ],
       tableData: [],
       column: Object.freeze([
         {
           type: 'selection'
         },
         {
+          prop: 'goodsName',
+          label: '货品类型',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'stateName',
+          label: '状态',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
           prop: 'name',
-          label: '选中附件名称',
+          label: '名称',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'brandName',
+          label: '品牌',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'categoryName',
+          label: '品类',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'source',
+          label: '来源',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'price',
+          label: '价格',
+          isNumber: true,
           headerAlign: 'center',
           align: 'center'
         }
@@ -65,11 +108,64 @@ export default {
     detail
   },
   created () {
-    console.log(1)
+    if (localStorage.getItem('arr')) {
+      this.tableData = JSON.parse(localStorage.getItem('arr'))
+    } else {
+      this.tableData = []
+    }
+    // this.selectChange()
   },
   methods: {
+    saveItem () {
+      localStorage.setItem('arr', JSON.stringify(this.tableData))
+      // majorlist = this.tableData
+    },
+    summaryMethod ({ columns, data }) {
+      if (!data.length) return []
+      const columnProp = [
+        'price'
+      ]
+      const totalArr = []
+      for (let i = 0, len = columns.length; i < len; i++) {
+        const { property } = columns[i]
+        if (i === 0) {
+          totalArr.push(<span>合计</span>)
+        } else {
+          const values = data.map(
+            item => Number(item[property])
+          )
+          if (
+            columnProp.includes(property) &&
+            !values.every(value => isNaN(value))
+          ) {
+            const val = values.reduce((prev, curr) => {
+              const value = Number(curr)
+              if (!isNaN(value)) {
+                return accAdd(prev, curr)
+              } else {
+                return prev
+              }
+            }, 0)
+            totalArr[i] = this.setFormatNumber(val)
+          } else {
+            totalArr[i] = ''
+          }
+        }
+      }
+      return [totalArr]
+    },
+    handleSave (data) {
+      this.tableData.push(data)
+    },
     addItem () {
       this.$refs.detaile.openDialog()
+    },
+    selectChange () {
+      const search = this.goosType
+      if (search) {
+        return this.tableData.filter(data => data.goosType.toLowerCase().indexOf(search) > -1)
+      }
+      return this.tableData
     }
   }
 }
