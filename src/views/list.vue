@@ -20,6 +20,7 @@
       :columns="column"
       row-key="fileID"
       :data="tableData"
+      size="small"
       :summary-method="summaryMethod"
       show-summary
       class="table-wrapper"
@@ -100,6 +101,18 @@ export default {
           isNumber: true,
           headerAlign: 'center',
           align: 'center'
+        },
+        {
+          label: '操作',
+          headerAlign: 'center',
+          align: 'center',
+          width: '100px',
+          render (h, { row, index }) {
+            return (
+              <el-button type="primary" size="mini"
+                on-click={() => this.deleteRow(row, index)}>删除</el-button>
+            )
+          }
         }
       ])
     }
@@ -119,6 +132,9 @@ export default {
     saveItem () {
       localStorage.setItem('arr', JSON.stringify(this.tableData))
       // majorlist = this.tableData
+    },
+    deleteRow (row, index) {
+      console.log(row)
     },
     summaryMethod ({ columns, data }) {
       if (!data.length) return []
