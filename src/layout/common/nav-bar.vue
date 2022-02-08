@@ -31,29 +31,29 @@ export default {
       data: [
         {
           id: 1,
-          menuContent: '/goods-list/list',
+          menuContent: '/goods-list/index',
           menuName: '进货管理',
           children: [
             {
               id: 5,
-              menuContent: '/goods-list/list',
+              menuContent: '/goods-list/index',
               menuName: '正装管理'
             },
             {
               id: 6,
-              menuContent: '/goods-list/list',
+              menuContent: '/gift-list/index',
               menuName: '赠品管理'
             }
           ]
         },
         {
           id: 2,
-          menuContent: '/goods-list/list',
+          menuContent: '/goods-list/index',
           menuName: '积分管理'
         },
         {
           id: 3,
-          menuContent: '/goods-list/list',
+          menuContent: '/goods-list/index',
           menuName: '赠品管理'
         },
         {
@@ -63,12 +63,12 @@ export default {
           children: [
             {
               id: 5,
-              menuContent: '/goods-list/list',
+              menuContent: '/goods-list/index',
               menuName: '单品价格分析'
             },
             {
               id: 6,
-              menuContent: '/goods-list/list',
+              menuContent: '/goods-list/index',
               menuName: '收入分析'
             }
           ]

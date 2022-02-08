@@ -17,6 +17,24 @@ const mixin = {
     // 获取格式化金额
     getFormatNumber (prop) {
       return numeral(prop).value()
+    },
+    confirm ({ top, showClose = false, height, isShowFooter = true, callback, title = '提示', width = '400px', render, autoClose = true, message, showCancelButton = false, confirmButtonText = '确定', type = 'warning', cancelButtonText = '取消' }) {
+      return this.$msgBox({
+        top,
+        showClose,
+        isShowFooter,
+        callback,
+        width,
+        height,
+        type,
+        title,
+        message,
+        render,
+        cancelButtonText,
+        confirmButtonText,
+        showCancelButton,
+        autoClose
+      })
     }
   }
 }

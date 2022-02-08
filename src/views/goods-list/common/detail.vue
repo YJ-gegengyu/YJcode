@@ -30,64 +30,56 @@
                 </el-select>
             </el-col>
             <el-col :span="2" class="left-title">
-                品类
+                项目名称
             </el-col>
             <el-col :span="6" class="row-right">
-              <el-select class="btn-right" @change="categoryChange" clearable size="mini" v-model="form.category" placeholder="请选择">
-                  <el-option
-                    v-for="item in categoryList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-              </el-select>
+                <el-input v-model="form.projectName" clearable size="mini" placeholder="请输入项目名称"></el-input>
             </el-col>
             <el-col :span="2" class="left-title">
-                提货名称
+                进货时间
             </el-col>
             <el-col :span="6" class="row-right">
-                <el-input v-model="form.name" clearable size="mini" placeholder="请输入提货名称"></el-input>
+              <el-date-picker
+                v-model="form.purchaseTime"
+                type="date"
+                size="mini"
+                placeholder="选择日期">
+              </el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item class="row-wrapper">
             <el-col :span="2" class="left-title">
-                来源
+                来源(柜台)
             </el-col>
             <el-col :span="6" class="row-right">
-                <el-input v-model="form.source" clearable size="mini" placeholder="请输入内容"></el-input>
+                <el-input v-model="form.source" clearable size="mini" placeholder="请输入来源"></el-input>
             </el-col>
             <el-col :span="2" class="left-title">
-                价格
+                联系方式
             </el-col>
             <el-col :span="6" class="row-right">
-              <el-input v-model="form.price" v-floatNumber clearable size="mini" placeholder="请输入内容"></el-input>
+                <el-input v-int-number v-model="form.contactInformation" maxlength="11" clearable size="mini" placeholder="请输入联系方式"></el-input>
             </el-col>
             <el-col :span="2" class="left-title">
-                状态
+                总价
             </el-col>
             <el-col :span="6" class="row-right">
-              <el-select class="btn-right" @change="stateChange" clearable size="mini" v-model="form.state" placeholder="请选择">
-                  <el-option
-                    v-for="item in stateList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-              </el-select>
+              <el-input v-model="form.price" disabled v-floatNumber size="mini"></el-input>
             </el-col>
           </el-form-item>
         </div>
-        <!-- <div style="text-align:left;margin-bottom: 5px">
+        <div style="text-align:left;margin-bottom: 5px">
           <el-button type="primary" size="mini" @click="addDetail">增加明细</el-button>
         </div>
         <final-table
           :columns="column"
-          :data="tableData"
+          :data="form.tableData"
+          size="mini"
           border
           :row-height="40"
           class="table-wrapper"
           ref="refTable"
-        ></final-table> -->
+        ></final-table>
       </el-form>
     </div>
     <div class="bth-wrapper">
@@ -98,60 +90,37 @@
 </template>
 
 <script>
+import { accMul } from 'utils'
 import jsonBrand from 'json/brand.json'
 import jsonCategory from 'json/category.json'
-import jsonState from 'json/state.json'
+// import jsonState from 'json/state.json'
 const resetForm = {
   brand: '',
   brandName: '',
-  category: '',
-  categoryName: '',
-  name: '',
-  stateName: '已交款',
+  purchaseTime: '',
+  contactInformation: null,
+  projectName: '',
   price: '',
-  source: ''
+  source: '',
+  tableData: []
 }
 export default {
   data () {
     return {
       column: Object.freeze([
         {
-          prop: 'name',
-          label: '名称',
+          prop: 'goodsName',
+          label: '货品名称',
           headerAlign: 'center',
           align: 'center',
           render: (h, { row }) => {
             return (
               <div class="cell-wrapper auth-height">
                 <el-input
-                  size="mini"
-                  v-model={row.name}
+                  size="mini" clearable
+                  v-model={row.goodsName}
                   class="border-none debitAmount"
                 ></el-input>
-              </div>
-            )
-          }
-        },
-        {
-          prop: 'brand',
-          label: '品牌',
-          headerAlign: 'center',
-          align: 'center',
-          render: (h, { row, index }) => {
-            const brandList = () => {
-              return this.brandList.map(item => {
-                return <el-option
-                  key={item.id}
-                  label={item.name}
-                  value={item.id}>
-                </el-option>
-              })
-            }
-            return (
-              <div>
-                <el-select v-model={row.brand} size="mini" placeholder="请选择">
-                  {brandList()}
-                </el-select>
               </div>
             )
           }
@@ -173,12 +142,72 @@ export default {
             }
             return (
               <div>
-                <el-select v-model={row.category} size="mini" placeholder="请选择">
+                <el-select v-model={row.category} clearable size="mini" placeholder="请选择">
                   {categoryList()}
                 </el-select>
               </div>
             )
           }
+        },
+        {
+          prop: 'unitPrice',
+          label: '单价',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable v-floatNumber
+                  v-model={row.unitPrice}
+                  on-input={() => this.calculationRow(row)}
+                  class="border-none debitAmount"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'quantity',
+          label: '数量',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable v-int-number
+                  v-model={row.quantity}
+                  on-input={() => this.calculationRow(row)}
+                  class="border-none debitAmount"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'discount',
+          label: '折扣',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable v-int-number
+                  v-model={row.discount}
+                  on-input={() => this.calculationRow(row)}
+                  class="border-none debitAmount"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'singlePrice',
+          label: '折扣',
+          headerAlign: 'center',
+          align: 'center'
         },
         {
           label: '操作',
@@ -195,23 +224,20 @@ export default {
           }
         }
       ]),
-      tableData: [],
       visible: false,
       // 品牌list
       brandList: [],
       // 品类list
       categoryList: [],
-      // 阶段
-      stateList: [],
       form: {
         brand: '',
         brandName: '',
-        category: '',
-        categoryName: '',
-        name: '',
-        stateName: '已交款',
+        purchaseTime: '',
+        contactInformation: null,
+        projectName: '',
         price: '',
-        source: ''
+        source: '',
+        tableData: []
       }
     }
   },
@@ -223,32 +249,57 @@ export default {
     handleCancel () {
       this.visible = false
     },
-    categoryChange (val) {
-      const obj = this.categoryList.find(item => item.id === val)
-      this.form.categoryName = obj.name
-    },
+    // categoryChange (row, index) {
+    //   const obj = this.categoryList.find(item => item.id === row.category)
+    //   row.categoryName = obj.name
+    // },
     changeBrand (val) {
       const obj = this.brandList.find(item => item.id === val)
       this.form.brandName = obj.name
     },
-    stateChange (val) {
-      const obj = this.stateList.find(item => item.id === val)
-      this.form.stateName = obj.name
-    },
     resetData () {
       const { brand } = jsonBrand
       const { category } = jsonCategory
-      const { state } = jsonState
       this.brandList = brand
       this.categoryList = category
-      this.stateList = state
     },
     deleteIt (row, index) {
-      this.tableData.splice(index, 1)
+      this.form.tableData.splice(index, 1)
     },
-    // addDetail () {
-    //   this.tableData.push(resetForm)
-    // },
+    addDetail () {
+      this.form.tableData.push({
+        goodsName: '',
+        category: '',
+        // 单价
+        unitPrice: '',
+        // 折扣
+        discount: '',
+        // 数量
+        quantity: '',
+        // 单品总价
+        singlePrice: ''
+      })
+    },
+    // 当前行计算
+    async calculationRow (row) {
+      if (Number(row.discount) > 100) {
+        try {
+          await this.confirm({
+            message: '请确定下载还是预览',
+            autoClose: false,
+            showClose: true,
+            confirmButtonText: '预览',
+            cancelButtonText: '下载',
+            showCancelButton: true
+          })
+          await this.deleteDoubt()
+        } catch (error) {
+          this.dialogFormVisible = false
+          return false
+        }
+      }
+      console.log(accMul, 1)
+    },
     openDialog (row) {
       if (row) {
         this.form = { ...row }
@@ -264,7 +315,7 @@ export default {
 
 <style lang='scss' scoped>
   .table-box {
-    height: 700px;
+    height: 500px;
     overflow: hidden;
     overflow-y: auto;
     border: 1px solid $--base-border-color;

@@ -7,10 +7,10 @@
  * @LastEditTime: 2020-08-21 12:52:20
  */
 const layout = () => import('@/layout')
-// 正品管理
-const index = () => import('goods-list/index')
-const lists = {
-  path: '/goods-list',
+// 赠品管理
+const index = () => import('gift-list/index')
+const gifts = {
+  path: '/gift-list',
   component: layout,
   children: [
     {
@@ -18,11 +18,11 @@ const lists = {
       name: 'index',
       component: index,
       meta: {
-        title: '正品管理',
+        title: '赠品管理',
         cache: true
       }
     }
   ]
 }
 
-export default lists
+export default gifts

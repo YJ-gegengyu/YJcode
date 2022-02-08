@@ -13,7 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
@@ -96,6 +96,7 @@ module.exports = {
       .set('json', resolve('src/json'))
       .set('views', resolve('src/views'))
       .set('goods-list', resolve('src/views/goods-list'))
+      .set('gift-list', resolve('src/views/gift-list'))
       .set('home-box', resolve('src/views/home-box'))
   },
   devServer: {
