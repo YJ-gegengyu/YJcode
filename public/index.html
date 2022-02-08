@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <link rel="stylesheet" href="/static/css/reset.css">
-  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="<%= BASE_URL %>static/css/reset.css">
+  <link rel="stylesheet" href="<%= BASE_URL %>static/css/base.css">
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
@@ -19,7 +19,11 @@
         Please enable it to continue.</strong>
   </noscript>
   <div id="app"></div>
-  <script src="/static/js/index.min.js"></script>
+  <script src="<%= BASE_URL %>static/js/vue.min.js"></script>
+  <script src="<%= BASE_URL %>static/js/vue-router.min.js"></script>
+  <script src="<%= BASE_URL %>static/js/vuex.min.js"></script>
+  <script src="<%= BASE_URL %>static/js/index.min.js"></script>
+  <script src="<%= BASE_URL %>static/js/axios.min.js"></script>
   <!-- built files will be auto injected -->
 </body>
 

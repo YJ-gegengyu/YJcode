@@ -32,7 +32,7 @@
 
 <script>
 import { accAdd } from 'utils'
-import detail from '@/components/detail.vue'
+import detail from './common/detail'
 // const appData = require('../components/data/tableDate.json')
 // const majorlist = appData
 export default {

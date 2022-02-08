@@ -216,9 +216,9 @@
 </template>
 
 <script>
-import jsonBrand from './data/brand.json'
-import jsonCategory from './data/category.json'
-import jsonState from './data/state.json'
+import jsonBrand from 'json/brand.json'
+import jsonCategory from 'json/category.json'
+import jsonState from 'json/state.json'
 import { accMul, accDiv, accSub } from 'utils'
 const resetForm = {
   goodsType: 1,

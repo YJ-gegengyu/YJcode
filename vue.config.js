@@ -8,11 +8,11 @@
  */
 const path = require('path')
 // 去除console
-// const TerserPlugin = require('terser-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 // Gzip
-// const CompressionPlugin = require('compression-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 
-// const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
+const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
@@ -30,6 +30,59 @@ module.exports = {
       }
     }
   },
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      const minimizer = [
+        new TerserPlugin({
+          sourceMap: false,
+          terserOptions: {
+            compress: {
+              drop_debugger: true,
+              drop_console: true,
+              pure_funcs: ['console.log'] // 移除console
+            }
+          }
+        }),
+        new CompressionPlugin({
+          algorithm: 'gzip',
+          minRatio: 0.8,
+          test: productionGzipExtensions,
+          threshold: 10240,
+          deleteOriginalAssets: false
+        })
+      ]
+      return {
+        output: {
+          library: 'myProject',
+          libraryTarget: 'umd'
+        },
+        externals: {
+          vue: 'Vue',
+          'vue-router': 'VueRouter',
+          vuex: 'Vuex',
+          'element-ui': 'ELEMENT',
+          axios: 'axios'
+        },
+        optimization: {
+          minimizer
+        }
+      }
+    } else {
+      return {
+        output: {
+          library: 'myProject',
+          libraryTarget: 'umd'
+        },
+        externals: {
+          vue: 'Vue',
+          'vue-router': 'VueRouter',
+          vuex: 'Vuex',
+          'element-ui': 'ELEMENT',
+          axios: 'axios'
+        }
+      }
+    }
+  },
   chainWebpack: (config) => {
     config.resolve.alias
       .set('views', resolve('src/views'))
@@ -40,7 +93,10 @@ module.exports = {
       .set('directive', resolve('src/directive'))
       .set('final-ui', resolve('src/final-ui'))
       .set('mixin', resolve('src/mixin'))
+      .set('json', resolve('src/json'))
       .set('views', resolve('src/views'))
+      .set('goods-list', resolve('src/views/goods-list'))
+      .set('home-box', resolve('src/views/home-box'))
   },
   devServer: {
     contentBase: './',
