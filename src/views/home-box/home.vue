@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <template>
-      <ve-line :data="chartData" :extend="traderExtend" :seetings="chartSettings" :colors="colors"></ve-line>
+      <ve-line :data="chartData" :after-set-option="afterSetOptionOnce" :extend="traderExtend" :seetings="chartSettings" :colors="colors"></ve-line>
     </template>
   </div>
 </template>
@@ -25,7 +25,22 @@ export default {
       colors: ['#0E9CFF', '#FFA70D']
     }
   },
+  created () {
+    this.initChartData()
+  },
   methods: {
+    afterSetOptionOnce (echartInstance, data) {
+      if (this.chartData.rows.length) {
+        if (!this.loop) {
+          // 设置自动轮播
+          window.tools.loopShowTooltip(echartInstance, data, {
+            interval: 3000,
+            loopSeries: false
+          })
+          this.loop = true
+        }
+      }
+    },
     initChartData () {
       this.tradeChartSettings = {
         yAxisType: ['KMB', 'percent'], // 数据类型
