@@ -60,19 +60,7 @@ export default {
           type: 'selection'
         },
         {
-          prop: 'goodsName',
-          label: '货品类型',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
-          prop: 'stateName',
-          label: '状态',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
-          prop: 'name',
+          prop: 'projectName',
           label: '名称',
           headerAlign: 'center',
           align: 'center'
@@ -84,12 +72,6 @@ export default {
           align: 'center'
         },
         {
-          prop: 'categoryName',
-          label: '品类',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
           prop: 'source',
           label: '来源',
           headerAlign: 'center',
@@ -97,7 +79,7 @@ export default {
         },
         {
           prop: 'price',
-          label: '价格',
+          label: '总价',
           isNumber: true,
           headerAlign: 'center',
           align: 'center'
@@ -109,8 +91,12 @@ export default {
           width: '100px',
           render (h, { row, index }) {
             return (
-              <el-button type="primary" size="mini"
-                on-click={() => this.deleteRow(row, index)}>删除</el-button>
+              <div>
+                <el-button type="primary" size="mini"
+                  on-click={() => this.handle(row, index)}>处理</el-button>
+                <el-button type="primary" size="mini"
+                  on-click={() => this.deleteRow(row, index)}>销货</el-button>
+              </div>
             )
           }
         }
@@ -134,6 +120,9 @@ export default {
       // majorlist = this.tableData
     },
     deleteRow (row, index) {
+      console.log(row)
+    },
+    handle (row, index) {
       console.log(row)
     },
     summaryMethod ({ columns, data }) {

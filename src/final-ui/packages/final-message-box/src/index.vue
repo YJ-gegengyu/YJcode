@@ -14,9 +14,9 @@
         <div class="final-ui-message-box"
           :style="style">
           <div class="message-box_header">
-            <slot name="title">
+            <template name="title">
               {{title}}
-            </slot>
+            </template>
             <button type="button"
               class="final-message-box_headerBth"
               aria-label="Close"
@@ -48,7 +48,7 @@
           <!-- <div v-if="autoClose" class="time" ></div> -->
           <div class="message-box_footer"
             v-if="isShowFooter">
-            <slot>
+            <template>
               <template v-if="autoClose">
                 <el-button @click="handleConfirm"
                   type="primary">关闭</el-button>
@@ -59,7 +59,7 @@
                 <el-button type="primary"
                   @click="handleConfirm">{{confirmButtonText}}</el-button>
               </template>
-            </slot>
+            </template>
           </div>
         </div>
       </div>

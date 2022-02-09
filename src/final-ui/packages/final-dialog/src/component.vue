@@ -16,9 +16,9 @@
       <div class="final-dialog"
         :style="style">
         <div class="final-dialog_header">
-          <slot name="title">
+          <template name="title">
             <div class="final-dialog_title">{{ title }}</div>
-          </slot>
+          </template>
           <button type="button"
             class="final-dialog_headerbtn"
             aria-label="Close"
@@ -35,7 +35,7 @@
         <div class="final-dialog__footer"
           v-if="$slots.footer"
           :class="[customFooterClass]">
-          <slot name="footer"></slot>
+          <template name="footer"></template>
         </div>
       </div>
       <div v-if="modal"

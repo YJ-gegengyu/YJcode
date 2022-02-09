@@ -8,7 +8,7 @@
  -->
 <template>
   <final-dialog :visible.sync="visible"
-    :title="商品详情"
+    title="进货单详情"
     fixed
     top="5vh"
     width="90%">
@@ -30,10 +30,10 @@
                 </el-select>
             </el-col>
             <el-col :span="2" class="left-title">
-                项目名称
+                名称
             </el-col>
             <el-col :span="6" class="row-right">
-                <el-input v-model="form.projectName" clearable size="mini" placeholder="请输入项目名称"></el-input>
+                <el-input v-model="form.projectName" clearable size="mini" placeholder="请输入名称"></el-input>
             </el-col>
             <el-col :span="2" class="left-title">
                 进货时间
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { accMul } from 'utils'
+import { accMul, accDiv, accAdd } from 'utils'
 import jsonBrand from 'json/brand.json'
 import jsonCategory from 'json/category.json'
 // import jsonState from 'json/state.json'
@@ -205,7 +205,7 @@ export default {
         },
         {
           prop: 'singlePrice',
-          label: '折扣',
+          label: '单品总价',
           headerAlign: 'center',
           align: 'center'
         },
@@ -265,6 +265,7 @@ export default {
     },
     deleteIt (row, index) {
       this.form.tableData.splice(index, 1)
+      this.totalProjectAmount()
     },
     addDetail () {
       this.form.tableData.push({
@@ -281,24 +282,39 @@ export default {
       })
     },
     // 当前行计算
-    async calculationRow (row) {
+    calculationRow (row) {
       if (Number(row.discount) > 100) {
-        try {
-          await this.confirm({
-            message: '请确定下载还是预览',
-            autoClose: false,
-            showClose: true,
-            confirmButtonText: '预览',
-            cancelButtonText: '下载',
-            showCancelButton: true
-          })
-          await this.deleteDoubt()
-        } catch (error) {
-          this.dialogFormVisible = false
-          return false
-        }
+        this.$alert('折扣不能高于100', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            row.discount = ''
+            return false
+          }
+        })
       }
-      console.log(accMul, 1)
+      // 单价 * 数量
+      const amout = accMul(row.unitPrice, row.quantity)
+      let zk = null
+      switch (row.discount.length) {
+        case 1:
+          zk = accDiv(row.discount, 10)
+          break
+        case 2:
+          zk = accDiv(row.discount, 100)
+          break
+        default:
+          zk = 1
+      }
+      row.singlePrice = accMul(amout, zk)
+      this.totalProjectAmount()
+    },
+    // 核算项目总金额
+    totalProjectAmount () {
+      const total = this.form.tableData.reduce(
+        (prev, next) => accAdd(prev, next.singlePrice),
+        0
+      )
+      this.form.price = this.setFormatNumber(total)
     },
     openDialog (row) {
       if (row) {

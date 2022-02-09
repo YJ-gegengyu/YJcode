@@ -1,19 +1,11 @@
 <template>
   <div class="content">
     <div class="btn">
-      <el-select clearable size="mini" @change="selectChange" v-model="goosType" placeholder="货品类型">
-        <el-option
-          v-for="item in goodsTypeList"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id">
-        </el-option>
-      </el-select>
       <el-button type="primary" @click="saveItem" size="mini">
         保存数据
       </el-button>
       <el-button type="primary" @click="addItem" size="mini">
-        增加条目<i class="el-icon-arrow-down el-icon--right"></i>
+        添加进货单<i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
     </div>
     <final-table
@@ -39,41 +31,20 @@ export default {
   name: 'list',
   data () {
     return {
-      goosType: 1,
-      goodsTypeList: [
-        {
-          id: 1,
-          name: '正装'
-        },
-        {
-          id: 2,
-          name: '赠品'
-        },
-        {
-          id: 3,
-          name: '积分'
-        }
-      ],
       tableData: [],
       column: Object.freeze([
         {
           type: 'selection'
         },
         {
-          prop: 'goodsName',
-          label: '货品类型',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
-          prop: 'stateName',
-          label: '状态',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
-          prop: 'name',
+          prop: 'projectName',
           label: '名称',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'purchaseTime',
+          label: '进货日期',
           headerAlign: 'center',
           align: 'center'
         },
@@ -84,20 +55,20 @@ export default {
           align: 'center'
         },
         {
-          prop: 'categoryName',
-          label: '品类',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
           prop: 'source',
           label: '来源',
           headerAlign: 'center',
           align: 'center'
         },
         {
+          prop: 'contactInformation',
+          label: '联系方式',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
           prop: 'price',
-          label: '价格',
+          label: '总价',
           isNumber: true,
           headerAlign: 'center',
           align: 'center'
@@ -126,7 +97,6 @@ export default {
     } else {
       this.tableData = []
     }
-    // this.selectChange()
   },
   methods: {
     saveItem () {
@@ -175,13 +145,6 @@ export default {
     },
     addItem () {
       this.$refs.detaile.openDialog()
-    },
-    selectChange () {
-      const search = this.goosType
-      if (search) {
-        return this.tableData.filter(data => data.goosType.toLowerCase().indexOf(search) > -1)
-      }
-      return this.tableData
     }
   }
 }

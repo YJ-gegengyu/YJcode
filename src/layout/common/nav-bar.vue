@@ -32,29 +32,17 @@ export default {
         {
           id: 1,
           menuContent: '/goods-list/index',
-          menuName: '进货管理',
-          children: [
-            {
-              id: 5,
-              menuContent: '/goods-list/index',
-              menuName: '正装管理'
-            },
-            {
-              id: 6,
-              menuContent: '/gift-list/index',
-              menuName: '赠品管理'
-            }
-          ]
+          menuName: '正装管理'
         },
         {
           id: 2,
-          menuContent: '/goods-list/index',
-          menuName: '积分管理'
+          menuContent: '/gift-list/index',
+          menuName: '赠品管理'
         },
         {
           id: 3,
           menuContent: '/goods-list/index',
-          menuName: '赠品管理'
+          menuName: '积分管理'
         },
         {
           id: 4,
