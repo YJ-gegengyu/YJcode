@@ -41,7 +41,7 @@ export default {
         },
         {
           id: 3,
-          menuContent: '/goods-list/index',
+          menuContent: '',
           menuName: '积分管理'
         },
         {
@@ -51,12 +51,12 @@ export default {
           children: [
             {
               id: 5,
-              menuContent: '/goods-list/index',
+              menuContent: '',
               menuName: '单品价格分析'
             },
             {
               id: 6,
-              menuContent: '/goods-list/index',
+              menuContent: '',
               menuName: '收入分析'
             }
           ]
