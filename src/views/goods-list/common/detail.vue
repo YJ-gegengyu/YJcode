@@ -61,19 +61,56 @@
                 <el-input v-int-number v-model="form.contactInformation" maxlength="11" clearable size="mini" placeholder="请输入联系方式"></el-input>
             </el-col>
             <el-col :span="2" class="left-title">
-                总价
+                正装总价
             </el-col>
             <el-col :span="6" class="row-right">
               <el-input v-model="form.price" disabled v-floatNumber size="mini"></el-input>
             </el-col>
           </el-form-item>
+          <el-form-item class="row-wrapper">
+            <el-col :span="2" class="left-title">
+                备注一
+            </el-col>
+            <el-col :span="6" class="row-right">
+                <el-checkbox v-model="form.hasGift">是否含赠品</el-checkbox>
+            </el-col>
+            <el-col :span="2" class="left-title">
+                备注二
+            </el-col>
+            <el-col :span="6" class="row-right">
+                <el-checkbox v-model="form.hasIntegral">是否含积分</el-checkbox>
+            </el-col>
+            <el-col :span="2" class="left-title" v-if="form.hasIntegral">
+                总积分
+            </el-col>
+            <el-col :span="6" class="row-right" v-if="form.hasIntegral">
+              <el-input v-model="form.totalIntegral" v-int-number size="mini"></el-input>
+            </el-col>
+          </el-form-item>
         </div>
-        <div style="text-align:left;margin-bottom: 5px">
+        <div class="table-title-style">
+          <p class="tableTitle">正装明细</p>
           <el-button type="primary" size="mini" @click="addDetail">增加明细</el-button>
         </div>
         <final-table
           :columns="column"
           :data="form.tableData"
+          size="mini"
+          border
+          :row-height="40"
+          class="table-wrapper"
+          ref="refTable"
+        ></final-table>
+        <br>
+        <br>
+        <div v-if="form.hasGift" class="table-title-style">
+          <p class="tableTitle">赠品明细</p>
+          <el-button type="primary" size="mini" @click="addGiftDetail">增加明细</el-button>
+        </div>
+        <final-table
+          v-show="form.hasGift"
+          :columns="giftColumn"
+          :data="form.giftTableData"
           size="mini"
           border
           :row-height="40"
@@ -102,12 +139,24 @@ const resetForm = {
   projectName: '',
   price: '',
   source: '',
-  tableData: []
+  totalIntegral: '',
+  hasGift: false,
+  hasIntegral: false,
+  tableData: [],
+  giftTableData: []
 }
 export default {
   data () {
     return {
       column: Object.freeze([
+        {
+          label: '序号',
+          align: 'center',
+          width: 50,
+          render (h, { index }) {
+            return <span>{index + 1}</span>
+          }
+        },
         {
           prop: 'goodsName',
           label: '货品名称',
@@ -119,7 +168,7 @@ export default {
                 <el-input
                   size="mini" clearable
                   v-model={row.goodsName}
-                  class="border-none debitAmount"
+                  class="border-none"
                 ></el-input>
               </div>
             )
@@ -161,7 +210,7 @@ export default {
                   size="mini" clearable v-floatNumber
                   v-model={row.unitPrice}
                   on-input={() => this.calculationRow(row)}
-                  class="border-none debitAmount"
+                  class="border-none"
                 ></el-input>
               </div>
             )
@@ -179,7 +228,7 @@ export default {
                   size="mini" clearable v-int-number
                   v-model={row.quantity}
                   on-input={() => this.calculationRow(row)}
-                  class="border-none debitAmount"
+                  class="border-none"
                 ></el-input>
               </div>
             )
@@ -197,7 +246,7 @@ export default {
                   size="mini" clearable v-int-number
                   v-model={row.discount}
                   on-input={() => this.calculationRow(row)}
-                  class="border-none debitAmount"
+                  class="border-none"
                 ></el-input>
               </div>
             )
@@ -216,9 +265,89 @@ export default {
           width: '120px',
           render: (h, { row, index }) => {
             return (
-              <div>
-                <el-button type="danger" size="mini"
-                  on-click={() => this.deleteIt(row, index)}>删除</el-button>
+              <div class="table-bth">
+                {
+                  <el-dropdown trigger="click" size="mini"
+                    on-command={(type) => this.handleBtn(type, row, index, 'tableData')}>
+                    <el-button type="primary" size="mini">
+                    操作<i class="el-icon-arrow-down el-icon--right"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                      {
+                        <el-dropdown-item command="deleteIt">删除</el-dropdown-item>
+                      }
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                }
+              </div>
+            )
+          }
+        }
+      ]),
+      giftColumn: Object.freeze([
+        {
+          label: '序号',
+          align: 'center',
+          width: 50,
+          render (h, { index }) {
+            return <span>{index + 1}</span>
+          }
+        },
+        {
+          prop: 'giftGoodsName',
+          label: '赠品名称',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable
+                  v-model={row.giftGoodsName}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'giftQuantity',
+          label: '赠品数量',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable v-int-number
+                  v-model={row.giftQuantity}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          label: '操作',
+          headerAlign: 'center',
+          align: 'center',
+          width: '120px',
+          render: (h, { row, index }) => {
+            return (
+              <div class="table-bth">
+                {
+                  <el-dropdown trigger="click" size="mini"
+                    on-command={(type) => this.handleBtn(type, row, index, 'giftTableData')}>
+                    <el-button type="primary" size="mini">
+                    操作<i class="el-icon-arrow-down el-icon--right"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                      {
+                        <el-dropdown-item command="deleteIt">删除</el-dropdown-item>
+                      }
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                }
               </div>
             )
           }
@@ -237,7 +366,11 @@ export default {
         projectName: '',
         price: '',
         source: '',
-        tableData: []
+        hasGift: false,
+        hasIntegral: false,
+        totalIntegral: '',
+        tableData: [],
+        giftTableData: []
       }
     }
   },
@@ -263,9 +396,9 @@ export default {
       this.brandList = brand
       this.categoryList = category
     },
-    deleteIt (row, index) {
-      this.form.tableData.splice(index, 1)
-      this.totalProjectAmount()
+    deleteIt (row, index, who) {
+      this.form[who].splice(index, 1)
+      who === 'tableData' && this.totalProjectAmount()
     },
     addDetail () {
       this.form.tableData.push({
@@ -279,6 +412,20 @@ export default {
         quantity: '',
         // 单品总价
         singlePrice: ''
+      })
+    },
+    // 行内按钮操作
+    handleBtn (name, row, index, who) {
+      switch (name) {
+        case 'deleteIt':
+          this.deleteIt(row, index, who)
+      }
+    },
+    addGiftDetail () {
+      this.form.giftTableData.push({
+        giftGoodsName: '',
+        // 数量
+        giftQuantity: ''
       })
     },
     // 当前行计算
@@ -344,6 +491,24 @@ export default {
     .table-tab {
       // border-top: 1px solid #dddddd;
       margin: 5px 0;
+    }
+    .table-title-style{
+      text-align:left;
+      margin-bottom:5px;
+      position:relative;
+    }
+    .tableTitle{
+      width: 200px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      position: absolute;
+      line-height: 28px;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
     border: 1px solid #ddd;
     padding: 10px;

@@ -37,6 +37,14 @@ export default {
           type: 'selection'
         },
         {
+          label: '序号',
+          align: 'center',
+          width: 50,
+          render (h, { index }) {
+            return <span>{index + 1}</span>
+          }
+        },
+        {
           prop: 'projectName',
           label: '名称',
           headerAlign: 'center',
