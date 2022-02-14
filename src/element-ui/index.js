@@ -1,9 +1,9 @@
 /*
  * @Description: 组件信息描述
  * @version: 2.1.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-06-20 18:08:24
- * @,@LastEditors: ,: MR·小涛
+ * @,@LastEditors: ,: MR·ggy
  * @,@LastEditTime: ,: 2021-01-04 14:01:26
  */
 import Vue from 'vue'

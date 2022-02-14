@@ -1,7 +1,7 @@
 /*
  * @Description: 组件信息描述
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-07-04 22:55:45
  * @LastEditors: dengqiang
  * @LastEditTime: 2021-06-25 10:59:37

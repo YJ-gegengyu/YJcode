@@ -1,9 +1,9 @@
 /*
  * @Description: 组件信息描述
  * @version: 2.1.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-06-22 09:06:14
- * @,@LastEditors: ,: MR·小涛
+ * @,@LastEditors: ,: MR·ggy
  * @,@LastEditTime: ,: 2021-01-02 20:41:47
  */
 const path = require('path')

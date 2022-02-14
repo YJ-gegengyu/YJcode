@@ -1,9 +1,9 @@
 /*
  * @Description: dialog拖拽
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-07-11 20:33:44
- * @LastEditors: MR·小涛
+ * @LastEditors: MR·ggy
  * @LastEditTime: 2020-08-13 17:07:33
  */
 export const dialogDrag = {

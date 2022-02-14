@@ -1,9 +1,9 @@
 <!--
- * @Description: 组件信息描述 报销详情
+ * @Description: 组件信息描述 进货单详情
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-08-26 17:51:32
- * @,@LastEditors: ,: MR·小涛
+ * @,@LastEditors: ,: MR·ggy
  * @,@LastEditTime: ,: 2021-02-18 10:41:12
  -->
 <template>

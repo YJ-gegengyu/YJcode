@@ -1,9 +1,9 @@
 <!--
  * @Description: 组件信息描述
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-09-02 16:57:12
- * @LastEditors: MR·小涛
+ * @LastEditors: MR·ggy
  * @LastEditTime: 2020-09-02 21:34:40
  -->
 <template>

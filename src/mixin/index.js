@@ -1,9 +1,9 @@
 /*
  * @Description: 全局Mixin
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-07-02 18:09:32
- * @LastEditors: MR·小涛
+ * @LastEditors: MR·ggy
  * @LastEditTime: 2020-07-02 18:10:39
  */
 // 引入全局状态

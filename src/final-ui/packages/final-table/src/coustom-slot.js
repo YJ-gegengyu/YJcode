@@ -1,9 +1,9 @@
 /*
  * @Description: 组件信息描述
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-07-02 16:57:47
- * @,@LastEditors: ,: MR·小涛
+ * @,@LastEditors: ,: MR·ggy
  * @,@LastEditTime: ,: 2020-12-02 11:30:51
  */
 const customSlot = {

@@ -1,9 +1,9 @@
 <!--
  * @Description: 针对Element重新封装的input组件重写监听器
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-07-04 22:16:46
- * @LastEditors: MR·小涛
+ * @LastEditors: MR·ggy
  * @LastEditTime: 2020-09-02 11:35:15
  -->
 <template>

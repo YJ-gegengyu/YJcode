@@ -1,9 +1,9 @@
 /*
  * @Description: 组件信息描述
  * @version: 3.0.0
- * @Author: MR·小涛
+ * @Author: MR·ggy
  * @Date: 2020-07-02 18:10:12
- * @,@LastEditors: ,: MR·小涛
+ * @,@LastEditors: ,: MR·ggy
  * @,@LastEditTime: ,: 2021-02-07 17:28:36
  */
 import numeral from 'numeral'
