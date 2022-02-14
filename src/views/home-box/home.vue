@@ -27,6 +27,7 @@ export default {
   },
   created () {
     this.initChartData()
+    console.log(process.env.VUE_APP_server_url, window.serverConfig.server_url)
   },
   methods: {
     afterSetOptionOnce (echartInstance, data) {
