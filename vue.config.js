@@ -3,8 +3,7 @@
  * @version: 2.1.0
  * @Author: MR·ggy
  * @Date: 2020-06-22 09:06:14
- * @,@LastEditors: ,: MR·ggy
- * @,@LastEditTime: ,: 2021-01-02 20:41:47
+ * @,@LastEditors: ,: MRggy * @,@LastEditTime: ,: 2021-01-02 20:41:47
  */
 const path = require('path')
 // 去除console
@@ -13,7 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
