@@ -206,12 +206,12 @@ export default {
           render: (h, { row }) => {
             return (
               <div class="cell-wrapper auth-height">
-                <el-input
-                  size="mini" clearable v-floatNumber
+                <final-input
+                  size="mini" number v-floatNumber
                   v-model={row.unitPrice}
                   on-input={() => this.calculationRow(row)}
                   class="border-none"
-                ></el-input>
+                ></final-input>
               </div>
             )
           }
