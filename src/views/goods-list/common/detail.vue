@@ -405,7 +405,7 @@ export default {
         goodsName: '',
         category: '',
         // 单价
-        unitPrice: '',
+        unitPrice: 0,
         // 折扣
         discount: '',
         // 数量
