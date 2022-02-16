@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { accMul, accDiv, accAdd } from 'utils'
+import { accMul, accAdd } from 'utils'
 import jsonBrand from 'json/brand.json'
 import jsonCategory from 'json/category.json'
 // import jsonState from 'json/state.json'
@@ -243,7 +243,7 @@ export default {
             return (
               <div class="cell-wrapper auth-height">
                 <el-input
-                  size="mini" clearable v-int-number
+                  size="mini" clearable number
                   v-model={row.discount}
                   on-input={() => this.calculationRow(row)}
                   class="border-none"
@@ -430,28 +430,9 @@ export default {
     },
     // 当前行计算
     calculationRow (row) {
-      if (Number(row.discount) > 100) {
-        this.$alert('折扣不能高于100', '提示', {
-          confirmButtonText: '确定',
-          callback: action => {
-            row.discount = ''
-            return false
-          }
-        })
-      }
       // 单价 * 数量
       const amout = accMul(row.unitPrice, row.quantity)
-      let zk = null
-      switch (row.discount.length) {
-        case 1:
-          zk = accDiv(row.discount, 10)
-          break
-        case 2:
-          zk = accDiv(row.discount, 100)
-          break
-        default:
-          zk = 1
-      }
+      const zk = row.discount ? row.discount : 1
       row.singlePrice = accMul(amout, zk)
       this.totalProjectAmount()
     },
