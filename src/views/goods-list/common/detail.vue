@@ -60,11 +60,25 @@
             <el-col :span="6" class="row-right">
                 <el-input v-int-number v-model="form.contactInformation" maxlength="11" clearable size="mini" placeholder="请输入联系方式"></el-input>
             </el-col>
+          </el-form-item>
+          <el-form-item class="row-wrapper">
             <el-col :span="2" class="left-title">
-                正装总价
+                正装买入总价
             </el-col>
             <el-col :span="6" class="row-right">
-              <el-input v-model="form.price" disabled v-floatNumber size="mini"></el-input>
+                <el-input v-model="form.purchasePrice" disabled v-floatNumber size="mini"></el-input>
+            </el-col>
+            <el-col :span="2" class="left-title">
+                正装卖出总价
+            </el-col>
+            <el-col :span="6" class="row-right">
+              <el-input v-model="form.sellOutPrice" disabled v-floatNumber size="mini"></el-input>
+            </el-col>
+            <el-col :span="2" class="left-title">
+                正装总差价
+            </el-col>
+            <el-col :span="6" class="row-right">
+              <el-input v-model="form.totalPriceDifferences" disabled v-floatNumber size="mini"></el-input>
             </el-col>
           </el-form-item>
           <el-form-item class="row-wrapper">
@@ -127,7 +141,7 @@
 </template>
 
 <script>
-import { accMul, accAdd } from 'utils'
+import { accMul, accSub, accAdd } from 'utils'
 import jsonBrand from 'json/brand.json'
 import jsonCategory from 'json/category.json'
 // import jsonState from 'json/state.json'
@@ -137,7 +151,9 @@ const resetForm = {
   purchaseTime: '',
   contactInformation: null,
   projectName: '',
-  price: '',
+  sellOutPrice: '',
+  purchasePrice: '',
+  totalPriceDifferences: '',
   source: '',
   totalIntegral: '',
   hasGift: false,
@@ -200,7 +216,7 @@ export default {
         },
         {
           prop: 'unitPrice',
-          label: '单价',
+          label: '原价单价',
           headerAlign: 'center',
           align: 'center',
           render: (h, { row }) => {
@@ -235,8 +251,8 @@ export default {
           }
         },
         {
-          prop: 'discount',
-          label: '折扣',
+          prop: 'purchaseDiscount',
+          label: '买入折扣',
           headerAlign: 'center',
           align: 'center',
           render: (h, { row }) => {
@@ -244,7 +260,7 @@ export default {
               <div class="cell-wrapper auth-height">
                 <el-input
                   size="mini" clearable number
-                  v-model={row.discount}
+                  v-model={row.purchaseDiscount}
                   on-input={() => this.calculationRow(row)}
                   class="border-none"
                 ></el-input>
@@ -253,8 +269,38 @@ export default {
           }
         },
         {
-          prop: 'singlePrice',
-          label: '单品总价',
+          prop: 'sellOutDiscount',
+          label: '卖出折扣',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable number
+                  v-model={row.sellOutDiscount}
+                  on-input={() => this.calculationRow(row)}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'purchaseinglePrice',
+          label: '买入单品总价',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'sellOutSinglePrice',
+          label: '卖出单品总价',
+          headerAlign: 'center',
+          align: 'center'
+        },
+        {
+          prop: 'singlePriceDifferences',
+          label: '进销差价',
           headerAlign: 'center',
           align: 'center'
         },
@@ -306,6 +352,30 @@ export default {
                   v-model={row.giftGoodsName}
                   class="border-none"
                 ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'giftCategory',
+          label: '赠品品类',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row, index }) => {
+            const categoryList = () => {
+              return this.categoryList.map(item => {
+                return <el-option
+                  key={item.id}
+                  label={item.name}
+                  value={item.id}>
+                </el-option>
+              })
+            }
+            return (
+              <div>
+                <el-select v-model={row.giftCategory} clearable size="mini" placeholder="请选择">
+                  {categoryList()}
+                </el-select>
               </div>
             )
           }
@@ -364,7 +434,9 @@ export default {
         purchaseTime: '',
         contactInformation: null,
         projectName: '',
-        price: '',
+        sellOutPrice: '',
+        totalPriceDifferences: '',
+        purchasePrice: '',
         source: '',
         hasGift: false,
         hasIntegral: false,
@@ -406,12 +478,18 @@ export default {
         category: '',
         // 单价
         unitPrice: 0,
-        // 折扣
-        discount: '',
+        // 买入折扣
+        purchaseDiscount: '',
+        // 卖出折扣
+        sellOutDiscount: '',
         // 数量
         quantity: '',
-        // 单品总价
-        singlePrice: ''
+        // 卖出单品总价
+        sellOutSinglePrice: '',
+        // 买入单品总价
+        purchaseinglePrice: '',
+        // 进销差价
+        singlePriceDifferences: ''
       })
     },
     // 行内按钮操作
@@ -424,6 +502,8 @@ export default {
     addGiftDetail () {
       this.form.giftTableData.push({
         giftGoodsName: '',
+        // 品类
+        giftCategory: '',
         // 数量
         giftQuantity: ''
       })
@@ -432,17 +512,28 @@ export default {
     calculationRow (row) {
       // 单价 * 数量
       const amout = accMul(row.unitPrice, row.quantity)
-      const zk = row.discount ? row.discount : 1
-      row.singlePrice = accMul(amout, zk)
+      // 卖出折扣
+      const mczk = row.sellOutDiscount ? row.sellOutDiscount : 1
+      // 买入折扣
+      const mrzk = row.purchaseDiscount ? row.purchaseDiscount : 1
+      row.purchaseinglePrice = accMul(amout, mrzk)
+      row.sellOutSinglePrice = accMul(amout, mczk)
+      row.singlePriceDifferences = accSub(row.sellOutSinglePrice, row.purchaseinglePrice)
       this.totalProjectAmount()
     },
-    // 核算项目总金额
+    // 核算项目卖出/买入/差值总金额
     totalProjectAmount () {
-      const total = this.form.tableData.reduce(
-        (prev, next) => accAdd(prev, next.singlePrice),
+      const sellOutTotal = this.form.tableData.reduce(
+        (prev, next) => accAdd(prev, next.sellOutSinglePrice),
         0
       )
-      this.form.price = this.setFormatNumber(total)
+      const purchaseTotal = this.form.tableData.reduce(
+        (prev, next) => accAdd(prev, next.purchaseinglePrice),
+        0
+      )
+      this.form.sellOutPrice = this.setFormatNumber(sellOutTotal)
+      this.form.purchasePrice = this.setFormatNumber(purchaseTotal)
+      this.form.totalPriceDifferences = accSub(sellOutTotal, purchaseTotal)
     },
     openDialog (row) {
       if (row) {
