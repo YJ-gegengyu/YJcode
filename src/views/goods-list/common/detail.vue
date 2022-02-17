@@ -287,7 +287,7 @@ export default {
           }
         },
         {
-          prop: 'purchaseinglePrice',
+          prop: 'purchaseSinglePrice',
           label: '买入单品总价',
           headerAlign: 'center',
           align: 'center'
@@ -487,7 +487,7 @@ export default {
         // 卖出单品总价
         sellOutSinglePrice: '',
         // 买入单品总价
-        purchaseinglePrice: '',
+        purchaseSinglePrice: '',
         // 进销差价
         singlePriceDifferences: ''
       })
@@ -516,9 +516,9 @@ export default {
       const mczk = row.sellOutDiscount ? row.sellOutDiscount : 1
       // 买入折扣
       const mrzk = row.purchaseDiscount ? row.purchaseDiscount : 1
-      row.purchaseinglePrice = accMul(amout, mrzk)
+      row.purchaseSinglePrice = accMul(amout, mrzk)
       row.sellOutSinglePrice = accMul(amout, mczk)
-      row.singlePriceDifferences = accSub(row.sellOutSinglePrice, row.purchaseinglePrice)
+      row.singlePriceDifferences = accSub(row.sellOutSinglePrice, row.purchaseSinglePrice)
       this.totalProjectAmount()
     },
     // 核算项目卖出/买入/差值总金额
@@ -528,7 +528,7 @@ export default {
         0
       )
       const purchaseTotal = this.form.tableData.reduce(
-        (prev, next) => accAdd(prev, next.purchaseinglePrice),
+        (prev, next) => accAdd(prev, next.purchaseSinglePrice),
         0
       )
       this.form.sellOutPrice = this.setFormatNumber(sellOutTotal)
