@@ -1,14 +1,14 @@
 <!--
  * @Description: finalTable组件
  * @version: 3.0.0
- * @Author: MR·ggy
+ * @Author: MR·小涛
  * @Date: 2020-07-02 15:31:28
- * @,@LastEditors: ,: MR·ggy
- * @,@LastEditTime: ,: 2020-12-30 17:42:26
+ * @,@LastEditors: ,: MR·小涛
+ * @,@LastEditTime: ,: 2021-02-25 18:16:37
  -->
 <template>
   <div class="final-ui-table_wrapper"
-    ref="finalTableWrapper">
+    ref="finalTableWrapper" :key="renderKey">
     <pl-table :data="data"
       ref="ref"
       :border="border"
@@ -26,31 +26,43 @@
       @cell-mouse-leave="cellMouseLeave"
       :show-summary="showSummary"
       :summary-method="summaryMethod"
+      @row-click="rowClick"
+      @row-dblclick="rowDblclick"
       :span-method="spanMethod"
       :cell-class-name="cellClassName"
       :highlight-current-row="highlightCurrentRow"
       :empty-text="emptyText"
       :default-expand-all=" defaultExpandAll"
       :tree-config='treeConfig'
+      @row-contextmenu="rowContextmenu"
       :row-class-name="rowClassName"
+      @setCurrentRow="setCurrentRow"
+      @selection-change="selectionChange"
+      @select="select"
+      @select-all="selectAll"
+      @cell-dblclick="cellDblclick"
+      @cell-click="cellClick"
       :pagination-show="paginationShow"
       :total="total"
       :page-size="pageSize"
       :current-page="currentPage"
       :page-sizes="pageSizes"
+      @handlePageSize="handlePageSize"
+      @sort-change='sortChange'
+      @expand-change="expandChange"
       v-bind="$attrs"
-      v-on="$listeners"
-      class="final-table">
+      class="final-table"
+      :class="[{'no-hover': !isShowRowHover},{'show-expand' : showExpand}]">
       <template slot="empty">
         <slot name="empty">
           <final-empty :emptyText="emptyText"></final-empty>
         </slot>
       </template>
       <template v-for="(columnItem,index) in  columns">
-        <template v-if="columnItem.type">
+        <template v-if="columnItem.type === 'selection'">
           <pl-table-column :key="index"
             v-if="!disabled"
-            :type="columnItem.type"
+            type="selection"
             :align="columnItem.align || 'center'"
             :width="columnItem.width"
             :selectable="selectable"
@@ -64,6 +76,37 @@
             :reserve-selection="columnItem.reserveSelection"
             :header-align="columnItem.headerAlign"
             :formatter="columnItem.formatter">
+          </pl-table-column>
+        </template>
+        <template v-else-if="columnItem.type === 'expand'">
+          <pl-table-column :key="index"
+            type="expand"
+            :prop="columnItem.prop"
+            :label="columnItem.label"
+            :min-width="columnItem.minWidth"
+            :width="columnItem.width"
+            :align="columnItem.align"
+            :fixed="columnItem.fixed"
+            :sortable="columnItem.sortable"
+            :sort-method="columnItem.sortMethod"
+            :sort-orders="columnItem.sortOrders"
+            :sort-by="columnItem.sortBy"
+            :header-align="columnItem.headerAlign"
+            :formatter="columnItem.formatter"
+            :treeNode="columnItem.treeNode || false"
+            :show-overflow-tooltip="columnItem.showOverflowTooltip!==undefined ? columnItem.showOverflowTooltip: true ">
+            <template slot-scope="{row,$index,column}">
+              <!-- 如果当前列有render函数走这里 -->
+              <template v-if="columnItem.render">
+                <custom-slot :render="columnItem.render"
+                  :row="row"
+                  :index="$index"
+                  :column="column"
+                  :columnIndex="index"
+                  :instance='instance'
+                  :columnProp="columnItem"></custom-slot>
+              </template>
+            </template>
           </pl-table-column>
         </template>
         <template v-else>
@@ -108,7 +151,7 @@
                 <!-- 如果需要显示格式化数字走这里 -->
                 <template v-else-if="columnItem.isNumber">
                   <template v-if="columnItem.zeroShow">
-                    {{row[columnItem.prop] === undefined ? null : setFormatNumber(row[columnItem.prop])}}
+                    {{setFormatNumber(row[columnItem.prop])}}
                   </template>
                   <template v-else>
                     {{(row[columnItem.prop] === 0 || !row[columnItem.prop]) ? null : setFormatNumber(row[columnItem.prop])}}
@@ -145,15 +188,17 @@
           class="del-content">
           <div v-for="(item,index) in data"
             :key="index"
-            class="icon-wrapper">
+            class="icon-wrapper"
+            :style="{height: `${rowHeight}px`}">
             <span class="el-icon-minus"
-              @click="afterDel(item,index)"></span>
+              @click="afterDel(item,index)"
+              v-if="isShowCurrentRowAfterDel({row:item,index})"></span>
           </div>
         </div>
       </div>
     </transition>
     <!-- 右键菜单信息 -->
-    <!-- <vue-context-menu class="right-menu"
+    <vue-context-menu class="right-menu"
       :target="contextMenuTarget"
       :show="contextMenuVisible"
       ref="rightMenu"
@@ -163,7 +208,7 @@
         }
       }">
       <slot name="right-menu"></slot>
-    </vue-context-menu> -->
+    </vue-context-menu>
   </div>
 </template>
 
@@ -175,6 +220,15 @@ import { debounce } from '../../../utils'
 export default {
   name: 'final-table',
   props: {
+    showExpand: {
+      default: false,
+      type: Boolean
+    },
+    // 如果显示table右侧删除 那么设置显示条件
+    isShowCurrentRowAfterDel: {
+      default: () => true,
+      type: Function
+    },
     disabled: {
       default: false,
       type: Boolean
@@ -299,6 +353,11 @@ export default {
       type: Boolean,
       default: false
     },
+    // 是否显示hover
+    isShowRowHover: {
+      type: Boolean,
+      default: true
+    },
     // 合计行方法
     summaryMethod: Function,
     // 单元格的 className 的回调方法
@@ -312,6 +371,11 @@ export default {
     // 'vue-context-menu': VueContextMenu
   },
   watch: {
+    data (val) {
+      if (val.length) {
+        this.renderKey++
+      }
+    },
     // 是否显示删除按钮
     isShowDelBth (val) {
       if (!val) {
@@ -351,6 +415,7 @@ export default {
   },
   data () {
     return {
+      renderKey: 1,
       instance: this,
       contextMenuVisible: false,
       contextMenuTarget: null,
@@ -368,6 +433,9 @@ export default {
     this.initRightButton()
   },
   methods: {
+    expandChange () {
+      this.$emit('expand-change', ...arguments)
+    },
     // 自定义排序触发
     sortChange () {
       this.$emit('sort-change', ...arguments)
@@ -393,6 +461,12 @@ export default {
     // 高亮行
     toggleRowSelection () {
       this.$refs.ref.toggleRowSelection(...arguments)
+    },
+    selectAll () {
+      this.$emit('select-all', ...arguments)
+    },
+    select () {
+      this.$emit('select', ...arguments)
     },
     // checkbox 选中触发
     selectionChange () {
@@ -480,7 +554,7 @@ export default {
         // this.$refs.delRow.style.top = `${top - bodyTop - 5}px`
         this.currentArguments = { row, column, cell, event }
       }
-      this.$emit('cellMouseEnter', row, column, cell, event)
+      this.$emit('cell-mouse-enter', row, column, cell, event)
     }
   }
 }
@@ -534,7 +608,7 @@ export default {
   .del-row {
     position: absolute;
     right: -23px;
-    top: 36px;
+    top: 40px;
     width: 20px;
     overflow: hidden;
     box-sizing: border-box;
@@ -580,15 +654,35 @@ export default {
   }
   ::v-deep {
     .final-table {
+      &.no-hover {
+        .el-table__row {
+          &:hover {
+            td {
+              background: #fff;
+            }
+          }
+        }
+      }
+      &.show-expand {
+        .el-table__expand-icon {
+          // width: 100%;
+          display: inline-block;
+          .el-icon-arrow-right {
+            display: inline-block;
+          }
+        }
+      }
       .el-table {
         font-size: $--table-font-size;
         .el-table__fixed {
           .el-table__fixed-header-wrapper {
             tr {
               th {
-                background: $--table-background-color;
+                // background: $--table-background-color;
+                background: #fff;
               }
-              background: $--table-background-color;
+              // background: $--table-background-color;
+                background: #fff;
             }
           }
         }
@@ -646,9 +740,21 @@ export default {
       .el-table__header {
         .has-gutter tr {
           th {
+            // background: $--table-background-color;
+            background: #fff;
+          }
+          // background: $--table-background-color;
+            background: #fff;
+        }
+      }
+      .el-table__fixed-right{
+        .el-table__fixed-header-wrapper {
+          tr {
+            th {
+              background: $--table-background-color;
+            }
             background: $--table-background-color;
           }
-          background: $--table-background-color;
         }
       }
     }

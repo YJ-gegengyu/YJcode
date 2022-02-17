@@ -31,13 +31,30 @@ export default {
       data: [
         {
           id: 1,
-          menuContent: '/goods-list/index',
-          menuName: '正装管理'
+          menuContent: '/warehousing-management/index',
+          menuName: '入库管理'
         },
         {
           id: 2,
-          menuContent: '/gift-list/index',
-          menuName: '赠品管理'
+          menuContent: '',
+          menuName: '出库管理',
+          children: [
+            {
+              id: 21,
+              menuContent: '/exWarehouse-management/goodsList',
+              menuName: '正装出库'
+            },
+            {
+              id: 22,
+              menuContent: '/exWarehouse-management/giftList',
+              menuName: '赠品出库'
+            },
+            {
+              id: 23,
+              menuContent: '',
+              menuName: '积分出库'
+            }
+          ]
         },
         {
           id: 3,
@@ -50,12 +67,12 @@ export default {
           menuName: '统计分析',
           children: [
             {
-              id: 5,
+              id: 41,
               menuContent: '',
               menuName: '单品价格分析'
             },
             {
-              id: 6,
+              id: 42,
               menuContent: '',
               menuName: '收入分析'
             }

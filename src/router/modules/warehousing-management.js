@@ -7,10 +7,10 @@
  * @LastEditTime: 2020-08-21 12:52:20
  */
 const layout = () => import('@/layout')
-// 赠品管理
-const index = () => import('gift-list/index')
-const gifts = {
-  path: '/gift-list',
+// 入库管理
+const index = () => import('warehousing-management/index')
+const warehousings = {
+  path: '/warehousing-management',
   component: layout,
   children: [
     {
@@ -18,11 +18,11 @@ const gifts = {
       name: 'index',
       component: index,
       meta: {
-        title: '赠品管理',
+        title: '入库管理',
         cache: true
       }
     }
   ]
 }
 
-export default gifts
+export default warehousings

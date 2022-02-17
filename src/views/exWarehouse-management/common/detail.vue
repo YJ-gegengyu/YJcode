@@ -1,5 +1,5 @@
 <!--
- * @Description: 组件信息描述 进货单详情
+ * @Description: 组件信息描述 出库 正装
  * @version: 3.0.0
  * @Author: MR·ggy
  * @Date: 2020-08-26 17:51:32
@@ -112,6 +112,10 @@
           size="mini"
           border
           :row-height="40"
+          showExpand
+          row-key="id"
+          @expand-change="expandChange"
+          :expand-row-keys="expands"
           class="table-wrapper"
           ref="refTable"
         ></final-table>
@@ -164,7 +168,50 @@ const resetForm = {
 export default {
   data () {
     return {
+      detailColumns: [
+        {
+          prop: 'sellOutDiscount',
+          label: '卖出折扣',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable number
+                  v-model={row.sellOutDiscount}
+                  on-input={() => this.calculationRow(row)}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'sellOutSinglePrice',
+          label: '卖出单品总价',
+          headerAlign: 'center',
+          align: 'center'
+        }
+      ],
+      expands: [],
       column: Object.freeze([
+        {
+          type: 'expand',
+          // label: '详情',
+          render: (h, { row }) => {
+            return (
+              <div class="expandBox">
+                <final-table
+                  columns={this.detailColumns}
+                  data={row.dataDetails}
+                  class="table-wrapper"
+                  row-key="id"
+                ></final-table>
+              </div>
+            )
+          }
+        },
         {
           label: '序号',
           align: 'center',
@@ -221,13 +268,8 @@ export default {
           align: 'center',
           render: (h, { row }) => {
             return (
-              <div class="cell-wrapper auth-height">
-                <final-input
-                  size="mini" number v-floatNumber
-                  v-model={row.unitPrice}
-                  on-input={() => this.calculationRow(row)}
-                  class="border-none"
-                ></final-input>
+              <div class="cell-wrapper div-auth-height">
+                {this.setFormatNumber(row.unitPrice)}
               </div>
             )
           }
@@ -239,13 +281,8 @@ export default {
           align: 'center',
           render: (h, { row }) => {
             return (
-              <div class="cell-wrapper auth-height">
-                <el-input
-                  size="mini" clearable v-int-number
-                  v-model={row.quantity}
-                  on-input={() => this.calculationRow(row)}
-                  class="border-none"
-                ></el-input>
+              <div class="cell-wrapper div-auth-height">
+                {row.quantity}
               </div>
             )
           }
@@ -257,53 +294,55 @@ export default {
           align: 'center',
           render: (h, { row }) => {
             return (
-              <div class="cell-wrapper auth-height">
-                <el-input
-                  size="mini" clearable number
-                  v-model={row.purchaseDiscount}
-                  on-input={() => this.calculationRow(row)}
-                  class="border-none"
-                ></el-input>
+              <div class="cell-wrapper div-auth-height">
+                {row.purchaseDiscount}
               </div>
             )
           }
         },
-        {
-          prop: 'sellOutDiscount',
-          label: '卖出折扣',
-          headerAlign: 'center',
-          align: 'center',
-          render: (h, { row }) => {
-            return (
-              <div class="cell-wrapper auth-height">
-                <el-input
-                  size="mini" clearable number
-                  v-model={row.sellOutDiscount}
-                  on-input={() => this.calculationRow(row)}
-                  class="border-none"
-                ></el-input>
-              </div>
-            )
-          }
-        },
+        // {
+        //   prop: 'sellOutDiscount',
+        //   label: '卖出折扣',
+        //   headerAlign: 'center',
+        //   align: 'center',
+        //   render: (h, { row }) => {
+        //     return (
+        //       <div class="cell-wrapper auth-height">
+        //         <el-input
+        //           size="mini" clearable number
+        //           v-model={row.sellOutDiscount}
+        //           on-input={() => this.calculationRow(row)}
+        //           class="border-none"
+        //         ></el-input>
+        //       </div>
+        //     )
+        //   }
+        // },
         {
           prop: 'purchaseSinglePrice',
           label: '买入单品总价',
           headerAlign: 'center',
-          align: 'center'
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper div-auth-height">
+                {this.setFormatNumber(row.purchaseSinglePrice)}
+              </div>
+            )
+          }
         },
-        {
-          prop: 'sellOutSinglePrice',
-          label: '卖出单品总价',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
-          prop: 'singlePriceDifferences',
-          label: '进销差价',
-          headerAlign: 'center',
-          align: 'center'
-        },
+        // {
+        //   prop: 'sellOutSinglePrice',
+        //   label: '卖出单品总价',
+        //   headerAlign: 'center',
+        //   align: 'center'
+        // },
+        // {
+        //   prop: 'singlePriceDifferences',
+        //   label: '进销差价',
+        //   headerAlign: 'center',
+        //   align: 'center'
+        // },
         {
           label: '操作',
           headerAlign: 'center',
@@ -447,6 +486,19 @@ export default {
     }
   },
   methods: {
+    expandChange (row) {
+      console.log(row)
+      if (this.expands.length) {
+        if (row.id === this.expands[0]) {
+          this.expands = []
+        } else {
+          this.expands = []
+          this.expands.push(row.id)
+        }
+      } else {
+        this.expands.push(row.id)
+      }
+    },
     handleSave () {
       this.$emit('handleSave', this.form)
       this.visible = false
@@ -474,6 +526,7 @@ export default {
     },
     addDetail () {
       this.form.tableData.push({
+        id: this.form.tableData.length,
         goodsName: '',
         category: '',
         // 单价
@@ -489,8 +542,15 @@ export default {
         // 买入单品总价
         purchaseSinglePrice: '',
         // 进销差价
-        singlePriceDifferences: ''
+        singlePriceDifferences: '',
+        dataDetails: [
+          {
+            sellOutDiscount: '0.56',
+            sellOutSinglePrice: 123
+          }
+        ]
       })
+      console.log(this.form.tableData)
     },
     // 行内按钮操作
     handleBtn (name, row, index, who) {
@@ -651,6 +711,9 @@ export default {
       }
     }
   }
+.div-auth-height{
+  line-height: 40px;
+}
 .bth-wrapper{
     margin-top: 10px;
     text-align: center;
@@ -668,6 +731,9 @@ export default {
         .el-form-item__content{
             line-height: 40px;
         }
+    }
+    .expandBox{
+      padding: 10px 20px;
     }
     .el-select, .el-input{
       width: 100%;

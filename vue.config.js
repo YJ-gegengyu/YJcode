@@ -94,8 +94,8 @@ module.exports = {
       .set('mixin', resolve('src/mixin'))
       .set('json', resolve('src/json'))
       .set('views', resolve('src/views'))
-      .set('goods-list', resolve('src/views/goods-list'))
-      .set('gift-list', resolve('src/views/gift-list'))
+      .set('warehousing-management', resolve('src/views/warehousing-management'))
+      .set('exWarehouse-management', resolve('src/views/exWarehouse-management'))
       .set('home-box', resolve('src/views/home-box'))
   },
   devServer: {
