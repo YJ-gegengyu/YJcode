@@ -4,6 +4,36 @@
       <!-- <el-button type="primary" @click="saveItem" size="mini">
         保存数据
       </el-button> -->
+      <span>品牌：</span>
+      <el-select size="mini" clearable multiple class="mr search-head-input" v-model="req.brand" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <span>品类：</span>
+      <el-select size="mini" multiple clearable class="mr search-head-input" v-model="req.category" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <span>入库时间：</span>
+      <el-date-picker
+        class="search-head-data mr"
+        v-model="req.data"
+        type="daterange"
+        size="mini"
+        range-separator="-"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期">
+      </el-date-picker>
       <el-button type="primary" @click="addItem" size="mini">
         添加进货单<i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
@@ -31,6 +61,12 @@ export default {
   name: 'list',
   data () {
     return {
+      req: {
+        data: [],
+        category: [],
+        brand: []
+      },
+      options: [],
       tableData: [],
       column: Object.freeze([
         {
@@ -57,26 +93,22 @@ export default {
           align: 'center'
         },
         {
-          prop: 'brandName',
-          label: '品牌',
+          prop: 'purchasePrice',
+          label: '正装总价',
+          isNumber: true,
           headerAlign: 'center',
           align: 'center'
         },
         {
-          prop: 'source',
-          label: '来源',
+          prop: 'giftPrice',
+          label: '赠品总价',
+          isNumber: true,
           headerAlign: 'center',
           align: 'center'
         },
         {
-          prop: 'contactInformation',
-          label: '联系方式',
-          headerAlign: 'center',
-          align: 'center'
-        },
-        {
-          prop: 'price',
-          label: '总价',
+          prop: 'totalIntegral',
+          label: '总积分',
           isNumber: true,
           headerAlign: 'center',
           align: 'center'
@@ -108,7 +140,8 @@ export default {
   },
   methods: {
     saveItem () {
-      localStorage.setItem('arr', JSON.stringify(this.tableData))
+      console.log(this.req)
+      // localStorage.setItem('arr', JSON.stringify(this.tableData))
       // majorlist = this.tableData
     },
     deleteRow (row, index) {
@@ -164,12 +197,25 @@ export default {
   height: 100%;
   padding: 10px;
   // padding-top: 10px;
+  .search-head-data {
+    width: 240px;
+  }
+  .search-head-input {
+    width: 150px;
+  }
   .btn {
     text-align: right;
     margin: 15px 0;
     .btn-right{
       margin-right: 10px;
     }
+  }
+}
+</style>
+<style lang="scss">
+.content {
+  .mr {
+    margin-right: 10px;
   }
 }
 </style>
