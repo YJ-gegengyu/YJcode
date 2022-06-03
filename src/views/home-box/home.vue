@@ -12,11 +12,11 @@ export default {
   data () {
     return {
       chartData: {
-        columns: ['日期', '企业成本利润率', '同比变化'],
+        columns: ['日期', '圣罗兰', '修丽可'],
         rows: [
-          { 日期: '2019-01', 企业成本利润率: '40', 同比变化: '50%' },
-          { 日期: '2019-06', 企业成本利润率: '50', 同比变化: '60%' },
-          { 日期: '2019-09', 企业成本利润率: '70', 同比变化: '80%' }
+          { 日期: '2019-01', 圣罗兰: '40', 修丽可: '50' },
+          { 日期: '2019-06', 圣罗兰: '50', 修丽可: '60' },
+          { 日期: '2019-09', 圣罗兰: '70', 修丽可: '80' }
         ]
       },
       chartSettings: {
@@ -44,7 +44,7 @@ export default {
     },
     initChartData () {
       this.tradeChartSettings = {
-        yAxisType: ['KMB', 'percent'], // 数据类型
+        yAxisType: ['KMB', 'KMB'], // 数据类型
         yAxisName: ['日均运量', '同比变化'] // y轴坐标轴的名称，在下面可以更改样式
       }
       this.initTraderExtend()

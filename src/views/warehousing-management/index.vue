@@ -1,9 +1,9 @@
 <template>
   <div class="content">
     <div class="btn">
-      <el-button type="primary" @click="saveItem" size="mini">
+      <!-- <el-button type="primary" @click="saveItem" size="mini">
         保存数据
-      </el-button>
+      </el-button> -->
       <el-button type="primary" @click="addItem" size="mini">
         添加进货单<i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>

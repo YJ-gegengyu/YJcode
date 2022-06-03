@@ -16,7 +16,7 @@
       <el-form :show-message="false">
         <div class="table-tab">
           <el-form-item class="row-wrapper border-top">
-            <el-col :span="2" class="left-title">
+            <!-- <el-col :span="2" class="left-title">
                 品牌
             </el-col>
             <el-col :span="6" class="row-right">
@@ -28,17 +28,17 @@
                     :value="item.id">
                   </el-option>
                 </el-select>
-            </el-col>
-            <el-col :span="2" class="left-title">
+            </el-col> -->
+            <el-col :span="3" class="left-title">
                 名称
             </el-col>
-            <el-col :span="6" class="row-right">
+            <el-col :span="9" class="row-right">
                 <el-input v-model="form.projectName" clearable size="mini" placeholder="请输入名称"></el-input>
             </el-col>
-            <el-col :span="2" class="left-title">
+            <el-col :span="3" class="left-title">
                 进货时间
             </el-col>
-            <el-col :span="6" class="row-right">
+            <el-col :span="9" class="row-right">
               <el-date-picker
                 v-model="form.purchaseTime"
                 type="date"
@@ -48,8 +48,8 @@
             </el-col>
           </el-form-item>
           <el-form-item class="row-wrapper">
-            <el-col :span="2" class="left-title">
-                来源(柜台)
+            <!-- <el-col :span="2" class="left-title">
+                来源
             </el-col>
             <el-col :span="6" class="row-right">
                 <el-input v-model="form.source" clearable size="mini" placeholder="请输入来源"></el-input>
@@ -59,12 +59,18 @@
             </el-col>
             <el-col :span="6" class="row-right">
                 <el-input v-int-number v-model="form.contactInformation" maxlength="11" clearable size="mini" placeholder="请输入联系方式"></el-input>
+            </el-col> -->
+            <el-col :span="3" class="left-title">
+                正装购入总价
             </el-col>
-            <el-col :span="2" class="left-title">
-                正装买入总价
-            </el-col>
-            <el-col :span="6" class="row-right">
+            <el-col :span="9" class="row-right">
                 <el-input v-model="form.purchasePrice" disabled v-floatNumber size="mini"></el-input>
+            </el-col>
+            <el-col :span="3" class="left-title" v-if="form.hasGift">
+                赠品购入总价
+            </el-col>
+            <el-col :span="9" class="row-right" v-if="form.hasGift">
+                <el-input v-model="form.giftPrice" disabled v-floatNumber size="mini"></el-input>
             </el-col>
           </el-form-item>
           <el-form-item class="row-wrapper">
@@ -132,16 +138,15 @@ import jsonBrand from 'json/brand.json'
 import jsonCategory from 'json/category.json'
 // import jsonState from 'json/state.json'
 const resetForm = {
-  brand: '',
-  brandName: '',
+  // brand: '',
+  // brandName: '',
   purchaseTime: '',
-  contactInformation: null,
   projectName: '',
   purchasePrice: '',
-  source: '',
-  totalIntegral: '',
+  giftPrice: '',
   hasGift: false,
   hasIntegral: false,
+  totalIntegral: '',
   tableData: [],
   giftTableData: []
 }
@@ -175,6 +180,23 @@ export default {
           }
         },
         {
+          prop: 'brand',
+          label: '品牌',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable
+                  v-model={row.brand}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
           prop: 'category',
           label: '品类',
           headerAlign: 'center',
@@ -194,6 +216,23 @@ export default {
                 <el-select v-model={row.category} clearable size="mini" placeholder="请选择">
                   {categoryList()}
                 </el-select>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'source',
+          label: '来源',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable
+                  v-model={row.source}
+                  class="border-none"
+                ></el-input>
               </div>
             )
           }
@@ -236,7 +275,7 @@ export default {
         },
         {
           prop: 'purchaseDiscount',
-          label: '买入折扣',
+          label: '购入折扣',
           headerAlign: 'center',
           align: 'center',
           render: (h, { row }) => {
@@ -254,7 +293,7 @@ export default {
         },
         {
           prop: 'purchaseSinglePrice',
-          label: '买入单品总价',
+          label: '购入单品总价',
           headerAlign: 'center',
           align: 'center'
         },
@@ -311,8 +350,25 @@ export default {
           }
         },
         {
+          prop: 'giftBrand',
+          label: '品牌',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable
+                  v-model={row.giftBrand}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
           prop: 'giftCategory',
-          label: '赠品品类',
+          label: '品类',
           headerAlign: 'center',
           align: 'center',
           render: (h, { row, index }) => {
@@ -335,6 +391,41 @@ export default {
           }
         },
         {
+          prop: 'giftSource',
+          label: '来源',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable
+                  v-model={row.source}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'giftSinglePrice',
+          label: '购入单品单价',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable v-int-number
+                  v-model={row.giftSinglePrice}
+                  on-input={() => this.calculationGiftRow(row)}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
           prop: 'giftQuantity',
           label: '赠品数量',
           headerAlign: 'center',
@@ -345,6 +436,24 @@ export default {
                 <el-input
                   size="mini" clearable v-int-number
                   v-model={row.giftQuantity}
+                  on-input={() => this.calculationGiftRow(row)}
+                  class="border-none"
+                ></el-input>
+              </div>
+            )
+          }
+        },
+        {
+          prop: 'giftSingleTotal',
+          label: '购入单品总价',
+          headerAlign: 'center',
+          align: 'center',
+          render: (h, { row }) => {
+            return (
+              <div class="cell-wrapper auth-height">
+                <el-input
+                  size="mini" clearable v-int-number
+                  v-model={row.giftSingleTotal}
                   class="border-none"
                 ></el-input>
               </div>
@@ -383,13 +492,12 @@ export default {
       // 品类list
       categoryList: [],
       form: {
-        brand: '',
-        brandName: '',
+        // brand: '',
+        // brandName: '',
         purchaseTime: '',
-        contactInformation: null,
         projectName: '',
         purchasePrice: '',
-        source: '',
+        giftPrice: '',
         hasGift: false,
         hasIntegral: false,
         totalIntegral: '',
@@ -427,14 +535,16 @@ export default {
     addDetail () {
       this.form.tableData.push({
         goodsName: '',
+        brand: '',
         category: '',
+        source: '',
         // 单价
         unitPrice: 0,
-        // 买入折扣
+        // 购入折扣
         purchaseDiscount: '',
         // 数量
         quantity: '',
-        // 买入单品总价
+        // 购入单品总价
         purchaseSinglePrice: ''
       })
     },
@@ -448,28 +558,49 @@ export default {
     addGiftDetail () {
       this.form.giftTableData.push({
         giftGoodsName: '',
+        // 品牌
+        giftBrand: '',
         // 品类
         giftCategory: '',
+        // 来源
+        giftSource: '',
         // 数量
-        giftQuantity: ''
+        giftQuantity: '',
+        giftSinglePrice: 0,
+        giftSingleTotal: ''
       })
     },
-    // 当前行计算
+    // 当前正装行计算
     calculationRow (row) {
       // 单价 * 数量
       const amout = accMul(row.unitPrice, row.quantity)
-      // 买入折扣
+      // 购入折扣
       const mrzk = row.purchaseDiscount ? row.purchaseDiscount : 1
       row.purchaseSinglePrice = accMul(amout, mrzk)
       this.totalProjectAmount()
     },
-    // 核算项目买入总金额
+    // 核算项目购入正装总金额
     totalProjectAmount () {
       const purchaseTotal = this.form.tableData.reduce(
         (prev, next) => accAdd(prev, next.purchaseSinglePrice),
         0
       )
       this.form.purchasePrice = this.setFormatNumber(purchaseTotal)
+    },
+    // 当前行赠品计算
+    calculationGiftRow (row) {
+      // 单价 * 数量
+      const amout = accMul(row.giftSinglePrice, row.giftQuantity)
+      row.giftSingleTotal = amout
+      this.totalGiftAmount()
+    },
+    // 项目 赠品总合计
+    totalGiftAmount () {
+      const giftTotal = this.form.giftTableData.reduce(
+        (prev, next) => accAdd(prev, next.giftSingleTotal),
+        0
+      )
+      this.form.giftPrice = this.setFormatNumber(giftTotal)
     },
     openDialog (row) {
       if (row) {
