@@ -1,3 +1,3 @@
 window.serverConfig = {
-  server_url: 'http://localhost:5308/'
+  server_url: 'http://localhost:5000/'
 }

@@ -1,9 +1,6 @@
 <template>
   <div class="content">
     <div class="btn">
-      <!-- <el-button type="primary" @click="saveItem" size="mini">
-        保存数据
-      </el-button> -->
       <span>品牌：</span>
       <el-select size="mini" clearable multiple class="mr search-head-input" v-model="req.brand" placeholder="请选择">
         <el-option
@@ -35,7 +32,7 @@
         end-placeholder="结束日期">
       </el-date-picker>
       <el-button type="primary" @click="addItem" size="mini">
-        添加进货单<i class="el-icon-arrow-down el-icon--right"></i>
+        添加进货单<i class="el-icon-plus el-icon--right"></i>
       </el-button>
     </div>
     <final-table
@@ -64,7 +61,9 @@ export default {
       req: {
         data: [],
         category: [],
-        brand: []
+        brand: [],
+        pageIndex: 1,
+        pageSize: 10
       },
       options: [],
       tableData: [],
@@ -131,19 +130,7 @@ export default {
   components: {
     detail
   },
-  created () {
-    if (localStorage.getItem('arr')) {
-      this.tableData = JSON.parse(localStorage.getItem('arr'))
-    } else {
-      this.tableData = []
-    }
-  },
   methods: {
-    saveItem () {
-      console.log(this.req)
-      // localStorage.setItem('arr', JSON.stringify(this.tableData))
-      // majorlist = this.tableData
-    },
     deleteRow (row, index) {
       console.log(row)
     },
@@ -194,7 +181,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .content {
-  height: 100%;
+  height: calc(100% - 60px);
   padding: 10px;
   // padding-top: 10px;
   .search-head-data {

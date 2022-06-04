@@ -9,9 +9,6 @@
           :value="item.id">
         </el-option>
       </el-select>
-      <el-button type="primary" @click="saveItem" size="mini">
-        保存数据
-      </el-button>
       <el-button type="primary" @click="addItem" size="mini">
         增加条目<i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
@@ -106,19 +103,7 @@ export default {
   components: {
     detail
   },
-  created () {
-    if (localStorage.getItem('arr')) {
-      this.tableData = JSON.parse(localStorage.getItem('arr'))
-    } else {
-      this.tableData = []
-    }
-    // this.selectChange()
-  },
   methods: {
-    saveItem () {
-      localStorage.setItem('arr', JSON.stringify(this.tableData))
-      // majorlist = this.tableData
-    },
     deleteRow (row, index) {
       console.log(row)
     },

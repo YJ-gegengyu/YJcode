@@ -35,49 +35,54 @@ export default {
           menuName: '入库管理'
         },
         {
-          id: 2,
-          menuContent: '',
-          menuName: '出库管理',
-          children: [
-            {
-              id: 21,
-              menuContent: '/exWarehouse-management/goodsList',
-              menuName: '正装出库'
-            },
-            {
-              id: 22,
-              menuContent: '/exWarehouse-management/giftList',
-              menuName: '赠品出库'
-            },
-            {
-              id: 23,
-              menuContent: '',
-              menuName: '积分出库'
-            }
-          ]
-        },
-        {
-          id: 3,
-          menuContent: '',
-          menuName: '积分管理'
-        },
-        {
-          id: 4,
-          menuContent: '',
-          menuName: '统计分析',
-          children: [
-            {
-              id: 41,
-              menuContent: '',
-              menuName: '单品价格分析'
-            },
-            {
-              id: 42,
-              menuContent: '',
-              menuName: '收入分析'
-            }
-          ]
+          id: 5,
+          menuContent: '/dictionaries-setting/dictionariesList',
+          menuName: '字典管理'
         }
+        // {
+        //   id: 2,
+        //   menuContent: '',
+        //   menuName: '出库管理',
+        //   children: [
+        //     {
+        //       id: 21,
+        //       menuContent: '/exWarehouse-management/goodsList',
+        //       menuName: '正装出库'
+        //     },
+        //     {
+        //       id: 22,
+        //       menuContent: '/exWarehouse-management/giftList',
+        //       menuName: '赠品出库'
+        //     },
+        //     {
+        //       id: 23,
+        //       menuContent: '',
+        //       menuName: '积分出库'
+        //     }
+        //   ]
+        // },
+        // {
+        //   id: 3,
+        //   menuContent: '',
+        //   menuName: '积分管理'
+        // },
+        // {
+        //   id: 4,
+        //   menuContent: '',
+        //   menuName: '统计分析',
+        //   children: [
+        //     {
+        //       id: 41,
+        //       menuContent: '',
+        //       menuName: '单品价格分析'
+        //     },
+        //     {
+        //       id: 42,
+        //       menuContent: '',
+        //       menuName: '收入分析'
+        //     }
+        //   ]
+        // }
       ]
     }
   },
