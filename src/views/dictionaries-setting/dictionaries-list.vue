@@ -2,8 +2,8 @@
   <div class="content">
     <el-tabs v-model="componentName" type="card">
       <el-tab-pane label="品牌" name="brandList"></el-tab-pane>
-      <el-tab-pane label="来源" name="sourceList"></el-tab-pane>
       <el-tab-pane label="品类" name="categoryList"></el-tab-pane>
+      <el-tab-pane label="来源" name="sourceList"></el-tab-pane>
     </el-tabs>
     <component :is="componentName"></component>
   </div>
