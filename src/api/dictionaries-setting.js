@@ -10,4 +10,4 @@ export const insertOrUpdateProduct = data => request.post('/Home/InsertOrUpdateP
 // 产品删除
 export const deleteProduct = data => request.post('/Home/DeleteProduct', data)
 // 产品列表查询
-export const getProduct = data => request.get(`/Home/GetProduct/${data}`)
+export const getProduct = data => request.get('/Home/GetProduct', data)
