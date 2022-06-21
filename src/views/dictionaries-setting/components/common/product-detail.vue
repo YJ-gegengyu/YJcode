@@ -1,13 +1,13 @@
 <template>
   <final-dialog :visible.sync="visible"
-    :title="titleName"
+    :title="新增品牌"
     fixed
     top="5vh"
     class="dictionaries-detail"
     width="60%">
     <div class="btn-box">
       <el-button type="primary" class="btn-style" @click="addItem" size="mini">
-        添加品牌<i class="el-icon-plus el-icon--right"></i>
+        添加产品<i class="el-icon-plus el-icon--right"></i>
       </el-button>
       <el-button type="primary" class="btn-style" @click="saveList" size="mini">
         保存
@@ -24,31 +24,27 @@
 </template>
 
 <script>
-import { insertOrUpdateDic } from 'api/dictionaries-setting'
-import { BRAND, CATEGORY, SOURCE } from 'enum'
+import { BRAND } from 'enum'
+import { insertOrUpdateProduct } from 'api/dictionaries-setting'
 export default {
   data () {
     return {
-      titleName: '',
       nameList: [],
-      visible: false,
-      typeId: null
+      visible: false
     }
   },
   methods: {
     addItem () {
       this.nameList.push(
         {
-          id: 0,
+          dicId: BRAND,
+          productId: 0,
           name: ''
         }
       )
     },
     async saveList () {
-      this.nameList.map(item => {
-        this.$set(item, 'typeId', this.typeId)
-      })
-      const res = await insertOrUpdateDic(this.nameList)
+      const res = await insertOrUpdateProduct(this.nameList)
       this.confirm({
         type: 'success',
         message: res.data
@@ -60,10 +56,11 @@ export default {
     deleteDetail (index) {
       this.nameList.splice(index, 1)
     },
-    showDialog (row, type) {
+    showDialog (row) {
       this.nameList = []
       const restData = [
         {
+          dicId: BRAND,
           id: 0,
           name: ''
         }
@@ -73,18 +70,6 @@ export default {
       } else {
         this.nameList = restData
       }
-      switch (type) {
-        case BRAND:
-          this.titleName = '品牌管理'
-          break
-        case CATEGORY:
-          this.titleName = '品类管理'
-          break
-        case SOURCE:
-          this.titleName = '来源管理'
-          break
-      }
-      this.typeId = type
       this.visible = true
     }
   }

@@ -19,7 +19,7 @@ import { isObject, checkBaseUrl } from '@/utils/check'
 class AjaxRequest {
   constructor() {
     // 接口请求路径
-    this.baseURL = process.env.NODE_ENV !== 'production' ? checkBaseUrl() : `${checkBaseUrl()}/audit`
+    this.baseURL = checkBaseUrl()
     //  超时时间
     this.timeout = 1000 * 60 * 3
     // 是否返回请求头信息
@@ -93,7 +93,7 @@ class AjaxRequest {
     }
     // 合并配置文件
     const config = {
-      // baseURL: this.baseURL,
+      baseURL: '/',
       timeout: this.timeout,
       headers: this.headers,
       responseType: this.responseType,

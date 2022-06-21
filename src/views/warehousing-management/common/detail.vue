@@ -16,29 +16,16 @@
       <el-form :show-message="false">
         <div class="table-tab">
           <el-form-item class="row-wrapper border-top">
-            <!-- <el-col :span="2" class="left-title">
-                品牌
-            </el-col>
-            <el-col :span="6" class="row-right">
-                <el-select class="btn-right" @change="changeBrand" clearable size="mini" v-model="form.brand" placeholder="请选择">
-                  <el-option
-                    v-for="item in brandList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
-            </el-col> -->
-            <el-col :span="3" class="left-title">
+            <el-col :span="2" class="left-title">
                 名称
             </el-col>
-            <el-col :span="9" class="row-right">
+            <el-col :span="4" class="row-right">
                 <el-input v-model="form.projectName" clearable size="mini" placeholder="请输入名称"></el-input>
             </el-col>
-            <el-col :span="3" class="left-title">
+            <el-col :span="2" class="left-title">
                 进货时间
             </el-col>
-            <el-col :span="9" class="row-right">
+            <el-col :span="4" class="row-right">
               <el-date-picker
                 v-model="form.purchaseTime"
                 type="date"
@@ -46,30 +33,16 @@
                 placeholder="选择日期">
               </el-date-picker>
             </el-col>
-          </el-form-item>
-          <el-form-item class="row-wrapper">
-            <!-- <el-col :span="2" class="left-title">
-                来源
-            </el-col>
-            <el-col :span="6" class="row-right">
-                <el-input v-model="form.source" clearable size="mini" placeholder="请输入来源"></el-input>
-            </el-col>
             <el-col :span="2" class="left-title">
-                联系方式
+                正装总价
             </el-col>
-            <el-col :span="6" class="row-right">
-                <el-input v-int-number v-model="form.contactInformation" maxlength="11" clearable size="mini" placeholder="请输入联系方式"></el-input>
-            </el-col> -->
-            <el-col :span="3" class="left-title">
-                正装购入总价
-            </el-col>
-            <el-col :span="9" class="row-right">
+            <el-col :span="4" class="row-right">
                 <el-input v-model="form.purchasePrice" disabled v-floatNumber size="mini"></el-input>
             </el-col>
-            <el-col :span="3" class="left-title" v-if="form.hasGift">
-                赠品购入总价
+            <el-col :span="2" class="left-title" v-if="form.hasGift">
+                赠品总价
             </el-col>
-            <el-col :span="9" class="row-right" v-if="form.hasGift">
+            <el-col :span="4" class="row-right" v-if="form.hasGift">
                 <el-input v-model="form.giftPrice" disabled v-floatNumber size="mini"></el-input>
             </el-col>
           </el-form-item>
@@ -94,35 +67,34 @@
             </el-col>
           </el-form-item>
         </div>
-        <div class="table-title-style">
-          <p class="tableTitle">正装明细</p>
-          <el-button type="primary" size="mini" @click="addDetail">增加明细</el-button>
+        <div class="table_box">
+          <div class="table-title-style">
+            <p class="tableTitle">正装明细</p>
+            <el-button type="primary" size="mini" @click="addDetail">增加明细</el-button>
+          </div>
+          <final-table
+            :columns="column"
+            :data="form.tableData"
+            size="mini"
+            :row-height="40"
+            class="table-wrapper"
+            ref="refTable"
+          ></final-table>
+          <br>
+          <div v-if="form.hasGift" class="table-title-style">
+            <p class="tableTitle">赠品明细</p>
+            <el-button type="primary" size="mini" @click="addGiftDetail">增加明细</el-button>
+          </div>
+          <final-table
+            v-show="form.hasGift"
+            :columns="giftColumn"
+            :data="form.giftTableData"
+            size="mini"
+            :row-height="40"
+            class="table-wrapper"
+            ref="refTable"
+          ></final-table>
         </div>
-        <final-table
-          :columns="column"
-          :data="form.tableData"
-          size="mini"
-          border
-          :row-height="40"
-          class="table-wrapper"
-          ref="refTable"
-        ></final-table>
-        <br>
-        <br>
-        <div v-if="form.hasGift" class="table-title-style">
-          <p class="tableTitle">赠品明细</p>
-          <el-button type="primary" size="mini" @click="addGiftDetail">增加明细</el-button>
-        </div>
-        <final-table
-          v-show="form.hasGift"
-          :columns="giftColumn"
-          :data="form.giftTableData"
-          size="mini"
-          border
-          :row-height="40"
-          class="table-wrapper"
-          ref="refTable"
-        ></final-table>
       </el-form>
     </div>
     <div class="bth-wrapper">
@@ -415,12 +387,12 @@ export default {
           render: (h, { row }) => {
             return (
               <div class="cell-wrapper auth-height">
-                <el-input
-                  size="mini" clearable v-int-number
+                <final-input
+                  size="mini" number v-floatNumber
                   v-model={row.giftSinglePrice}
                   on-input={() => this.calculationGiftRow(row)}
                   class="border-none"
-                ></el-input>
+                ></final-input>
               </div>
             )
           }
@@ -447,18 +419,18 @@ export default {
           prop: 'giftSingleTotal',
           label: '购入单品总价',
           headerAlign: 'center',
-          align: 'center',
-          render: (h, { row }) => {
-            return (
-              <div class="cell-wrapper auth-height">
-                <el-input
-                  size="mini" clearable v-int-number
-                  v-model={row.giftSingleTotal}
-                  class="border-none"
-                ></el-input>
-              </div>
-            )
-          }
+          align: 'center'
+          // render: (h, { row }) => {
+          //   return (
+          //     <div class="cell-wrapper auth-height">
+          //       <el-input
+          //         size="mini" clearable v-int-number
+          //         v-model={row.giftSingleTotal}
+          //         class="border-none"
+          //       ></el-input>
+          //     </div>
+          //   )
+          // }
         },
         {
           label: '操作',
@@ -533,7 +505,7 @@ export default {
       who === 'tableData' && this.totalProjectAmount()
     },
     addDetail () {
-      this.form.tableData.push({
+      this.form.tableData.unshift({
         goodsName: '',
         brand: '',
         category: '',
@@ -556,7 +528,7 @@ export default {
       }
     },
     addGiftDetail () {
-      this.form.giftTableData.push({
+      this.form.giftTableData.unshift({
         giftGoodsName: '',
         // 品牌
         giftBrand: '',
@@ -630,6 +602,10 @@ export default {
     .table-tab {
       // border-top: 1px solid #dddddd;
       margin: 5px 0;
+    }
+    .table_box {
+      height: 380px;
+      overflow: auto;
     }
     .table-title-style{
       text-align:left;

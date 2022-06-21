@@ -103,6 +103,17 @@ module.exports = {
   devServer: {
     contentBase: './',
     compress: true,
-    headers: { 'Access-Control-Allow-Origin': '*' }
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    proxy: { //配置多个跨域
+      "/Home": {
+        target: 'http://gxswub.natappfree.cc/',
+        changeOrigin: true,
+        // ws: true,//websocket支持
+        secure: false,
+        pathRewrite: {
+          "^/Home": ''
+        }
+      }
+    }
   }
 }

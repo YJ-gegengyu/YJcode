@@ -27,9 +27,44 @@ export default {
   },
   created () {
     this.initChartData()
-    console.log(process.env.VUE_APP_server_url, window.serverConfig.server_url)
+    // console.log(process.env.VUE_APP_server_url, window.serverConfig.server_url)
+    const query = {
+      aaa: 1,
+      bbb: {
+        ccc: 1,
+        ddd: [
+          {
+            eee: 1,
+            fff: null,
+            ggg: {
+              ttt: 123,
+              uuu: null
+            }
+          }
+        ]
+      }
+    }
+    console.log(this.filterParams(query))
   },
   methods: {
+    filterParams (data) {
+      const keys = Object.keys(data)
+      keys.forEach(key => {
+        const value = data[key]
+        // 如果是object
+        if (value !== null && (!Array.isArray(value)) && typeof value === 'object') this.filterParams(value)
+        // 如果是数组
+        if (value !== null && Array.isArray(value) && value.length) {
+          value.map(item => {
+            this.filterParams(item)
+          })
+        }
+        if (data[key] === null) {
+          data[key] = ''
+        }
+      })
+      return data
+    },
     afterSetOptionOnce (echartInstance, data) {
       if (this.chartData.rows.length) {
         if (!this.loop) {

@@ -200,9 +200,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.content {
-  .mr {
-    margin-right: 10px;
-  }
+.mr {
+  margin-right: 10px;
 }
 </style>
